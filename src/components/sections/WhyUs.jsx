@@ -3,8 +3,8 @@ import ScrollReveal from "../ui/ScrollReveal";
 
 export default function WhyUs() {
     return (
-        <section className="bg-white py-24 px-6">
-            <div className="max-w-5xl mx-auto">
+        <section id="why-us" className="bg-[#f4f7fc] py-24 px-6 relative overflow-hidden">
+            <div className="max-w-5xl mx-auto relative z-10">
                 <ScrollReveal>
                     <div className="max-w-xl mb-14">
                         <span className="text-amber-500 font-semibold text-xs uppercase tracking-[0.2em]">

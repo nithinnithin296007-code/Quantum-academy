@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
 import { Toaster } from "react-hot-toast";
 import Home from "./pages/Home";
 import ThankYou from "./pages/ThankYou";
@@ -7,13 +8,16 @@ import useLenis from "./hooks/useLenis";
 
 function AppContent() {
   useLenis();
+  const location = useLocation();
   return (
     <>
       <WhatsAppButton />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/thank-you" element={<ThankYou />} />
-      </Routes>
+      <AnimatePresence mode="wait" initial={false}>
+        <Routes location={location} key={location.pathname}>
+          <Route path="/" element={<Home />} />
+          <Route path="/thank-you" element={<ThankYou />} />
+        </Routes>
+      </AnimatePresence>
     </>
   );
 }
@@ -21,7 +25,7 @@ function AppContent() {
 export default function App() {
   return (
     <BrowserRouter>
-      <Toaster position="top-center" />
+      <Toaster position="top-center" toastOptions={{ duration: 3000 }} />
       <AppContent />
     </BrowserRouter>
   );

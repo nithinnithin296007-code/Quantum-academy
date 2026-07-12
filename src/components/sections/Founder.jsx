@@ -2,8 +2,8 @@ import TiltedCard from "../ui/TiltedCard";
 
 export default function Founder({ name, title, bio, photo, instagram }) {
     return (
-        <section className="bg-white py-28 px-6">
-            <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-16">
+        <section id="founder" className="bg-white py-28 px-6 relative overflow-hidden">
+            <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-16 relative z-10">
                 <div className="flex-shrink-0 w-full md:w-[420px]">
                     {photo ? (
                         <TiltedCard
@@ -37,7 +37,7 @@ export default function Founder({ name, title, bio, photo, instagram }) {
                             href={instagram}
                             target="_blank"
                             rel="noreferrer"
-                            className="inline-block mt-6 text-base font-medium text-navy-700 underline"
+                            className="inline-block mt-6 text-base font-medium text-navy-700 hover:text-navy-900 transition-colors underline"
                         >
                             Follow on Instagram
                         </a>

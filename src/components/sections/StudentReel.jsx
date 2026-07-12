@@ -1,11 +1,11 @@
 export default function StudentReel() {
     return (
-        <section className="bg-white py-24 px-6">
-            <div className="max-w-5xl mx-auto">
+        <section id="reviews" className="bg-[#f4f7fc] py-24 px-6 relative overflow-hidden">
+            <div className="max-w-5xl mx-auto relative z-10">
                 <div className="flex flex-col md:flex-row items-center gap-16">
 
                     {/* Text side */}
-                    <div className="flex-1">
+                    <div className="flex-grow">
                         <span className="text-amber-500 font-semibold text-xs uppercase tracking-[0.2em]">
                             Hear It From Them
                         </span>

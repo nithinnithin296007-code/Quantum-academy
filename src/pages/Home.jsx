@@ -9,22 +9,25 @@ import StudentReel from "../components/sections/StudentReel";
 import AppPromo from "../components/sections/AppPromo";
 import EnquiryForm from "../components/sections/EnquiryForm";
 import Footer from "../components/layout/Footer";
+import PageTransition from "../components/ui/PageTransition";
 import { FOUNDER } from "../constants/founder";
 
 export default function Home() {
     return (
-        <main>
-            <Navbar />
-            <Hero />
-            <WhyUs />
-            <Founder {...FOUNDER} />
-            <Faculty />
-            <Courses />
-            <WallOfFame />
-            <StudentReel />
-            <AppPromo />
-            <EnquiryForm />
-            <Footer />
-        </main>
+        <PageTransition>
+            <main>
+                <Navbar />
+                <Hero />
+                <WhyUs />
+                <Founder {...FOUNDER} />
+                <Faculty />
+                <Courses />
+                <WallOfFame />
+                <StudentReel />
+                <AppPromo />
+                <EnquiryForm />
+                <Footer />
+            </main>
+        </PageTransition>
     );
 }

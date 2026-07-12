@@ -7,22 +7,13 @@ export default function Navbar() {
     const [menuOpen, setMenuOpen] = useState(false);
     const location = useLocation();
 
-    const scrollToForm = () => {
+    const scrollToSection = (id) => {
         setMenuOpen(false);
         if (location.pathname !== "/") {
-            window.location.href = "/#enquiry";
+            window.location.href = `/#${id}`;
             return;
         }
-        document.getElementById("enquiry")?.scrollIntoView({ behavior: "smooth" });
-    };
-
-    const scrollToToppers = () => {
-        setMenuOpen(false);
-        if (location.pathname !== "/") {
-            window.location.href = "/#toppers";
-            return;
-        }
-        document.getElementById("toppers")?.scrollIntoView({ behavior: "smooth" });
+        document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
     };
 
     const [scrolled, setScrolled] = useState(false);
@@ -70,15 +61,36 @@ export default function Navbar() {
                     </Link>
 
                     <button
-                        onClick={scrollToToppers}
-                        className="text-sm font-medium text-gray-400 hover:text-white transition-colors"
+                        onClick={() => scrollToSection("why-us")}
+                        className="nav-link text-sm font-medium text-gray-400 hover:text-white cursor-pointer transition-colors"
+                    >
+                        Why Us
+                    </button>
+
+                    <button
+                        onClick={() => scrollToSection("courses")}
+                        className="nav-link text-sm font-medium text-gray-400 hover:text-white cursor-pointer transition-colors"
+                    >
+                        Courses
+                    </button>
+
+                    <button
+                        onClick={() => scrollToSection("faculty")}
+                        className="nav-link text-sm font-medium text-gray-400 hover:text-white cursor-pointer transition-colors"
+                    >
+                        Faculty
+                    </button>
+
+                    <button
+                        onClick={() => scrollToSection("toppers")}
+                        className="nav-link text-sm font-medium text-gray-400 hover:text-white cursor-pointer transition-colors"
                     >
                         Our Toppers
                     </button>
 
                     <button
-                        onClick={scrollToForm}
-                        className="bg-amber-400 text-navy-900 px-5 py-2.5 rounded-lg font-semibold text-sm hover:bg-amber-500 transition"
+                        onClick={() => scrollToSection("enquiry")}
+                        className="bg-amber-400 text-navy-900 px-5 py-2.5 rounded-lg font-semibold text-sm hover:bg-amber-500 cursor-pointer transition"
                     >
                         Enquire Now
                     </button>
@@ -108,15 +120,36 @@ export default function Navbar() {
                     </Link>
 
                     <button
-                        onClick={scrollToToppers}
-                        className="text-sm font-medium text-gray-400 text-left"
+                        onClick={() => scrollToSection("why-us")}
+                        className="text-sm font-medium text-gray-400 text-left cursor-pointer"
+                    >
+                        Why Us
+                    </button>
+
+                    <button
+                        onClick={() => scrollToSection("courses")}
+                        className="text-sm font-medium text-gray-400 text-left cursor-pointer"
+                    >
+                        Courses
+                    </button>
+
+                    <button
+                        onClick={() => scrollToSection("faculty")}
+                        className="text-sm font-medium text-gray-400 text-left cursor-pointer"
+                    >
+                        Faculty
+                    </button>
+
+                    <button
+                        onClick={() => scrollToSection("toppers")}
+                        className="text-sm font-medium text-gray-400 text-left cursor-pointer"
                     >
                         Our Toppers
                     </button>
 
                     <button
-                        onClick={scrollToForm}
-                        className="bg-amber-400 text-navy-900 px-5 py-2.5 rounded-lg font-semibold text-sm hover:bg-amber-500 transition text-left"
+                        onClick={() => scrollToSection("enquiry")}
+                        className="bg-amber-400 text-navy-900 px-5 py-2.5 rounded-lg font-semibold text-sm hover:bg-amber-500 cursor-pointer transition text-left"
                     >
                         Enquire Now
                     </button>
