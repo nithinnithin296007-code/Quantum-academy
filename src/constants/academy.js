@@ -1,0 +1,14 @@
+export const ACADEMY = {
+  name: "Quantum Academy",
+  tagline: "Clear JEE · NEET · MHT-CET.",
+  subTagline: "Bhayandar's focused Science coaching for XI & XII.",
+  address: "Shop No. 14-17, 1st Floor, Laxmi Sadan, Navghar Road, Bhayandar East - 401105",
+  phone: import.meta.env.VITE_PHONE,
+  whatsapp: import.meta.env.VITE_WHATSAPP ? import.meta.env.VITE_WHATSAPP.replace("https://wa.me/", "") : "",
+  instagram: import.meta.env.VITE_INSTAGRAM,
+  mapEmbedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3765.882987823522!2d72.8550186!3d19.2982855!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7b049d53cbfd5%3A0x6338e55e88691507!2sNavghar%20Rd%2C%20Bhayandar%20East%2C%20Mira%20Bhayandar%2C%20Mira%20Bhayandar%2C%20Maharashtra%20401105!5e0!3m2!1sen!2sin!4v1720810000000!5m2!1sen!2sin",
+  formspreeId: import.meta.env.VITE_FORMSPREE_ID || import.meta.env.VITE_FORMSPREE_KEY,
+  justdialRating: "4.9",
+  justdialReviews: "90+",
+  playStoreUrl: "https://play.google.com/store/apps/details?id=com.quantum.academy",
+};

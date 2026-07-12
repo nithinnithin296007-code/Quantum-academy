@@ -1,0 +1,77 @@
+# Cursor Rules - Quantum Academy Security & Coding Guidelines
+
+You must follow these rules strictly for every change you make in this repository.
+
+## Commands
+- Start dev server: `npm run dev`
+- Build the app: `npm run build`
+- Run linting: `npm run lint`
+- Preview: `npm run preview`
+
+## Styling & Reusability
+- Tailwind CSS (v4) is used. Custom utility classes must be added to `src/index.css`.
+- Keep code clean, modular, and reusable. Move shared hooks to `src/hooks/` and helper utilities to `src/utils/`.
+
+## Security Rules for AI-Generated Code
+
+### 1. Secrets and Environment Variables
+- Never expose API keys or secrets in frontend code.
+- Store private keys and config keys in `.env.local` only.
+- Never write hardcoded keys like `const KEY = "..."`.
+- Ensure all `.env` variants are ignored in `.gitignore`.
+- Maintain a `.env.example` file.
+
+### 2. Rate Limiting
+- Apply rate limiting to all public endpoints (5 req/15 min on auth, 60 req/min general).
+- Send clean `429 Too Many Requests` responses.
+
+### 3. Input Validation and Sanitization
+- Validate and sanitize all user input server-side.
+- Use validation schemas (Zod, Joi, or Pydantic) to verify types and lengths.
+- Prevent SQL injection: Use ORMs or parameterized queries. Never concatenate queries.
+
+### 4. Authentication and Authorization
+- Use established auth libraries (NextAuth, Clerk, lucia-auth, Passport.js).
+- Passwords must be hashed using bcrypt (min cost 12) or argon2.
+- JWTs must be signed with strong keys and have short expiry times.
+- Refresh tokens must be kept in secure `httpOnly` cookies.
+- Check resource ownership/permissions on every state-changing action.
+
+### 5. CORS Configurations
+- Never use wildcard CORS (`*`) in production.
+- Whitelist only specific allowed origins.
+
+### 6. HTTP Security Headers
+- Apply headers using helmet (CSP, HSTS, X-Frame-Options: DENY, nosniff).
+- Suppress framework signature headers (like `X-Powered-By`).
+
+### 7. File Upload Security
+- Validate uploaded file sizes, extensions, and MIME types.
+- Rename uploaded files using a UUID; never keep the original filename directly.
+- Store uploads outside the web root (e.g. S3, Cloudinary).
+- Never allow execute permissions on upload paths.
+
+### 8. Error Handling and Logging
+- Never return stack traces or raw database errors to the client.
+- Return generic user-facing messages and log full details server-side.
+- Integrate production trackers like Sentry or Datadog.
+
+### 9. Dependency Security
+- Periodically run `npm audit` and fix vulnerabilities.
+- Pin specific versions using package lock files.
+
+### 10. XSS Prevention
+- Never render raw dynamic HTML. Avoid `dangerouslySetInnerHTML` unless pre-sanitized with DOMPurify.
+- Avoid dynamic evaluation features like `eval()`.
+
+### 11. Deploy Checklist
+- No `.env` files are committed.
+- Environment variables are securely set in the hosting provider.
+- Verbose logging and debug modes are disabled.
+- Sitting database ports are restricted.
+- HTTPS is sitewide.
+
+### 12. AI and LLM Specific Checks
+- Treat LLM inputs/outputs as untrusted data. Sanitize outputs to prevent XSS.
+- Never place LLM API keys on the client-side. Proxy all AI requests through the server.
+- Set strict `max_tokens` limits and per-user token budgets to avoid runaway costs.

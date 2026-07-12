@@ -1,0 +1,55 @@
+import { ACADEMY } from "../../constants/academy";
+import logo from "../../assets/logo.png";
+import { handlePhoneClick } from "../../utils/contact";
+
+export default function Footer() {
+  return (
+    <footer className="bg-[#07091a] text-gray-400 py-12 px-6">
+      <div className="max-w-5xl mx-auto">
+        <div className="flex flex-col md:flex-row justify-between gap-8 pb-10 border-b border-white/10">
+          <div className="max-w-xs">
+            <div className="flex items-center gap-2.5">
+              <div className="h-8 w-8 rounded-full bg-white flex items-center justify-center p-1.5">
+                <img src={logo} alt={`${ACADEMY.name} logo`} className="h-full w-full object-contain" />
+              </div>
+              <p className="font-display font-black text-white text-xl">{ACADEMY.name}</p>
+            </div>
+            <p className="text-xs mt-1 text-amber-400">A Trust-driven Science Institute</p>
+            <p className="text-sm mt-4 leading-relaxed">{ACADEMY.address}</p>
+          </div>
+          <div className="flex flex-col gap-3 text-sm">
+            <span className="text-white font-semibold uppercase tracking-wider text-xs mb-1">Contact Details</span>
+            <a
+              href={`tel:${ACADEMY.phone}`}
+              onClick={(e) => handlePhoneClick(e, ACADEMY.phone)}
+              className="hover:text-amber-400 transition"
+            >
+              📞 {ACADEMY.phone}
+            </a>
+            <a href={`https://wa.me/${ACADEMY.whatsapp}`} target="_blank" rel="noreferrer" className="hover:text-amber-400 transition">
+              💬 WhatsApp Us
+            </a>
+            <a href={ACADEMY.instagram} target="_blank" rel="noreferrer" className="hover:text-amber-400 transition">
+              📸 Instagram
+            </a>
+          </div>
+          {ACADEMY.mapEmbedUrl && (
+            <div className="w-full md:w-[300px] h-[150px] rounded-2xl overflow-hidden border border-white/10 shadow-2xl flex-shrink-0">
+              <iframe
+                title="Quantum Academy Location Map"
+                src={ACADEMY.mapEmbedUrl}
+                className="w-full h-full border-0"
+                allowFullScreen=""
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
+          )}
+        </div>
+        <p className="text-center text-xs text-gray-600 mt-8">
+          © {new Date().getFullYear()} {ACADEMY.name}. All rights reserved.
+        </p>
+      </div>
+    </footer>
+  );
+}

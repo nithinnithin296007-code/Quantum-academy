@@ -1,0 +1,127 @@
+import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { ACADEMY } from "../../constants/academy";
+import logo from "../../assets/logo.png";
+
+export default function Navbar() {
+    const [menuOpen, setMenuOpen] = useState(false);
+    const location = useLocation();
+
+    const scrollToForm = () => {
+        setMenuOpen(false);
+        if (location.pathname !== "/") {
+            window.location.href = "/#enquiry";
+            return;
+        }
+        document.getElementById("enquiry")?.scrollIntoView({ behavior: "smooth" });
+    };
+
+    const scrollToToppers = () => {
+        setMenuOpen(false);
+        if (location.pathname !== "/") {
+            window.location.href = "/#toppers";
+            return;
+        }
+        document.getElementById("toppers")?.scrollIntoView({ behavior: "smooth" });
+    };
+
+    const [scrolled, setScrolled] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > 10) {
+                setScrolled(true);
+            } else {
+                setScrolled(false);
+            }
+        };
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+
+    return (
+        <header className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+            scrolled
+                ? "bg-[#07091a]/90 backdrop-blur-md border-b border-white/5 py-3"
+                : "bg-transparent py-5"
+        }`}>
+            <nav className="max-w-6xl mx-auto flex items-center justify-between px-4">
+
+                {/* Logo */}
+                <Link to="/" className="flex items-center gap-3">
+                    <div className="h-10 w-10 rounded-xl bg-white/95 flex items-center justify-center p-2 shadow-lg shadow-black/20">
+                        <img src={logo} alt={`${ACADEMY.name} logo`} className="h-full w-full object-contain" />
+                    </div>
+                    <span className="font-display font-bold text-xl text-white tracking-tight">
+                        {ACADEMY.name}
+                    </span>
+                </Link>
+
+                {/* Desktop links */}
+                <div className="hidden md:flex items-center gap-8">
+                    <Link
+                        to="/"
+                        className={`text-sm font-medium transition-colors ${location.pathname === "/"
+                            ? "text-amber-400 border-b-2 border-amber-400 pb-0.5"
+                            : "text-gray-400 hover:text-white"
+                            }`}
+                    >
+                        Home
+                    </Link>
+
+                    <button
+                        onClick={scrollToToppers}
+                        className="text-sm font-medium text-gray-400 hover:text-white transition-colors"
+                    >
+                        Our Toppers
+                    </button>
+
+                    <button
+                        onClick={scrollToForm}
+                        className="bg-amber-400 text-navy-900 px-5 py-2.5 rounded-lg font-semibold text-sm hover:bg-amber-500 transition"
+                    >
+                        Enquire Now
+                    </button>
+                </div>
+
+                {/* Mobile hamburger */}
+                <button
+                    className="md:hidden flex flex-col gap-1.5 p-1"
+                    onClick={() => setMenuOpen(!menuOpen)}
+                >
+                    <span className={`block h-0.5 w-6 bg-white transition-all ${menuOpen ? "rotate-45 translate-y-2" : ""}`} />
+                    <span className={`block h-0.5 w-6 bg-white transition-all ${menuOpen ? "opacity-0" : ""}`} />
+                    <span className={`block h-0.5 w-6 bg-white transition-all ${menuOpen ? "-rotate-45 -translate-y-2" : ""}`} />
+                </button>
+            </nav>
+
+            {/* Mobile menu */}
+            {menuOpen && (
+                <div className="md:hidden bg-[#07091a] border-t border-white/10 px-4 py-4 flex flex-col gap-4">
+                    <Link
+                        to="/"
+                        onClick={() => setMenuOpen(false)}
+                        className={`text-sm font-medium ${location.pathname === "/" ? "text-amber-400" : "text-gray-400"
+                            }`}
+                    >
+                        Home
+                    </Link>
+
+                    <button
+                        onClick={scrollToToppers}
+                        className="text-sm font-medium text-gray-400 text-left"
+                    >
+                        Our Toppers
+                    </button>
+
+                    <button
+                        onClick={scrollToForm}
+                        className="bg-amber-400 text-navy-900 px-5 py-2.5 rounded-lg font-semibold text-sm hover:bg-amber-500 transition text-left"
+                    >
+                        Enquire Now
+                    </button>
+                </div>
+            )}
+        </header>
+    );
+}
