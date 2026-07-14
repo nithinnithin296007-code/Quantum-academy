@@ -2,7 +2,7 @@ import { COURSES } from "../../constants/courses";
 
 export default function Courses() {
     const scrollToForm = () => {
-        document.getElementById("enquiry")?.scrollIntoView({ behavior: "smooth" });
+        window.lenis?.scrollTo("#enquiry", { duration: 1.5 });
     };
 
     const colors = [

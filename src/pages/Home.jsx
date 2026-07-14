@@ -1,33 +1,42 @@
 import Navbar from "../components/layout/Navbar";
 import Hero from "../components/sections/Hero";
 import WhyUs from "../components/sections/WhyUs";
+import MissionVision from "../components/sections/MissionVision";
 import Founder from "../components/sections/Founder";
 import Faculty from "../components/sections/Faculty";
 import Courses from "../components/sections/Courses";
+import FacilitiesSection from "../components/sections/FacilitiesSection";
+import TestSeriesSection from "../components/sections/TestSeriesSection";
+import BeyondClassroomSection from "../components/sections/BeyondClassroomSection";
+import AchieverRewards from "../components/sections/AchieverRewards";
 import WallOfFame from "../components/sections/WallOfFame";
 import StudentReel from "../components/sections/StudentReel";
+import FAQSection from "../components/sections/FAQSection";
 import AppPromo from "../components/sections/AppPromo";
 import EnquiryForm from "../components/sections/EnquiryForm";
 import Footer from "../components/layout/Footer";
-import PageTransition from "../components/ui/PageTransition";
 import { FOUNDER } from "../constants/founder";
 
 export default function Home() {
     return (
-        <PageTransition>
-            <main>
-                <Navbar />
-                <Hero />
-                <WhyUs />
-                <Founder {...FOUNDER} />
-                <Faculty />
-                <Courses />
-                <WallOfFame />
-                <StudentReel />
-                <AppPromo />
-                <EnquiryForm />
-                <Footer />
-            </main>
-        </PageTransition>
+        <main>
+            <Navbar />
+            <Hero />
+            <WhyUs />
+            <MissionVision />
+            <Founder {...FOUNDER} />
+            <Faculty />
+            <Courses />
+            <FacilitiesSection />
+            <TestSeriesSection />
+            <BeyondClassroomSection />
+            <AchieverRewards />
+            <WallOfFame />
+            <StudentReel />
+            <FAQSection />
+            <AppPromo />
+            <EnquiryForm />
+            <Footer />
+        </main>
     );
 }

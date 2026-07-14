@@ -26,6 +26,16 @@ export default function Footer() {
             >
               📞 {ACADEMY.phone}
             </a>
+            <a
+              href={`tel:${ACADEMY.phoneAlt}`}
+              onClick={(e) => handlePhoneClick(e, ACADEMY.phoneAlt)}
+              className="hover:text-amber-400 transition"
+            >
+              📞 {ACADEMY.phoneAlt}
+            </a>
+            <a href={`mailto:${ACADEMY.email}`} className="hover:text-amber-400 transition">
+              ✉️ {ACADEMY.email}
+            </a>
             <a href={`https://wa.me/${ACADEMY.whatsapp}`} target="_blank" rel="noreferrer" className="hover:text-amber-400 transition">
               💬 WhatsApp Us
             </a>
@@ -49,7 +59,7 @@ export default function Footer() {
         <p className="text-center text-xs text-gray-600 mt-8">
           © {new Date().getFullYear()} {ACADEMY.name}. All rights reserved.
         </p>
-      </div>
-    </footer>
+      </div >
+    </footer >
   );
 }

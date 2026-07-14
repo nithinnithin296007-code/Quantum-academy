@@ -19,7 +19,7 @@ export default function Hero() {
     }, []);
 
     const scrollToForm = () => {
-        document.getElementById("enquiry")?.scrollIntoView({ behavior: "smooth" });
+        window.lenis?.scrollTo("#enquiry", { duration: 1.5 });
     };
 
     return (

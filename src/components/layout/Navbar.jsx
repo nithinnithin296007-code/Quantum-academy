@@ -13,7 +13,7 @@ export default function Navbar() {
             window.location.href = `/#${id}`;
             return;
         }
-        document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+        window.lenis?.scrollTo(`#${id}`, { duration: 1.5 });
     };
 
     const [scrolled, setScrolled] = useState(false);
@@ -31,11 +31,10 @@ export default function Navbar() {
     }, []);
 
     return (
-        <header className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-            scrolled
-                ? "bg-[#07091a]/90 backdrop-blur-md border-b border-white/5 py-3"
-                : "bg-transparent py-5"
-        }`}>
+        <header className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled
+            ? "bg-[#07091a]/90 backdrop-blur-md border-b border-white/5 py-3"
+            : "bg-transparent py-5"
+            }`}>
             <nav className="max-w-6xl mx-auto flex items-center justify-between px-4">
 
                 {/* Logo */}
@@ -58,6 +57,26 @@ export default function Navbar() {
                             }`}
                     >
                         Home
+                    </Link>
+
+                    <Link
+                        to="/facilities"
+                        className={`text-sm font-medium transition-colors ${location.pathname === "/facilities"
+                            ? "text-amber-400 border-b-2 border-amber-400 pb-0.5"
+                            : "text-gray-400 hover:text-white"
+                            }`}
+                    >
+                        Facilities
+                    </Link>
+
+                    <Link
+                        to="/beyond-classroom"
+                        className={`text-sm font-medium transition-colors ${location.pathname === "/beyond-classroom"
+                            ? "text-amber-400 border-b-2 border-amber-400 pb-0.5"
+                            : "text-gray-400 hover:text-white"
+                            }`}
+                    >
+                        Beyond Classroom
                     </Link>
 
                     <button
@@ -117,6 +136,24 @@ export default function Navbar() {
                             }`}
                     >
                         Home
+                    </Link>
+
+                    <Link
+                        to="/facilities"
+                        onClick={() => setMenuOpen(false)}
+                        className={`text-sm font-medium ${location.pathname === "/facilities" ? "text-amber-400" : "text-gray-400"
+                            }`}
+                    >
+                        Facilities
+                    </Link>
+
+                    <Link
+                        to="/beyond-classroom"
+                        onClick={() => setMenuOpen(false)}
+                        className={`text-sm font-medium ${location.pathname === "/beyond-classroom" ? "text-amber-400" : "text-gray-400"
+                            }`}
+                    >
+                        Beyond Classroom
                     </Link>
 
                     <button
