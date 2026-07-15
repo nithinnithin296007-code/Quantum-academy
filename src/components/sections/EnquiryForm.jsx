@@ -52,7 +52,7 @@ function SuccessCard({ onReset }) {
             </div>
 
             <div>
-                <h3 className="text-2xl font-display font-black text-navy-700">Enquiry Sent! 🎉</h3>
+                <h3 className="text-2xl font-display font-black text-navy-700">Enquiry Sent! {"\u{1F389}"}</h3>
                 <p className="text-gray-500 mt-2 text-sm leading-relaxed">
                     Your WhatsApp chat with Quantum Academy should be open now.<br />
                     We'll get back to you within a few hours.
@@ -96,7 +96,7 @@ export default function EnquiryForm() {
         setIsSubmitting(true);
 
         const classText = data.targetClass === "Dropper" ? "Dropper Batch" : `Class ${data.targetClass}`;
-        const text = `Hello Quantum Academy Team! 👋
+        const text = `Hello Quantum Academy Team! \u{1F44B}
 
 I am looking to enroll ${data.name} in your ${data.targetClass === "Dropper" ? "Dropper batch" : `Class ${data.targetClass} program`} for ${data.exam}. Could you please share some admission details?
 
@@ -104,12 +104,12 @@ I am looking to enroll ${data.name} in your ${data.targetClass === "Dropper" ? "
 • *Student Name:* ${data.name}
 • *Class/Batch:* ${classText}
 • *Target Exam:* ${data.exam}
-• *Contact Number:* ${data.mobile} 📞
+• *Contact Number:* ${data.mobile} \u{1F4DE}
 ${data.message.trim() ? `• *Additional Message:* ${data.message.trim()}\n` : ""}
 *I'd love to know more about:*
-• 🕒 *Batch Timings* (specifically for ${classText})
-• 💳 *Fee Structure* & options
-• 🚀 *Next Steps* to initiate enrollment
+• \u{1F552} *Batch Timings* (specifically for ${classText})
+• \u{1F4B3} *Fee Structure* & options
+• \u{1F680} *Next Steps* to initiate enrollment
 
 Thank you! Looking forward to hearing from you.`;
 
@@ -125,7 +125,7 @@ Thank you! Looking forward to hearing from you.`;
                 toast.loading(`Opening WhatsApp in ${count}s...`, { id: toastId });
             } else {
                 clearInterval(countdown);
-                toast.success("Redirecting to WhatsApp! ✅", { id: toastId });
+                toast.success("Redirecting to WhatsApp! \u{2705}", { id: toastId });
                 window.open(whatsappUrl, "_blank", "noopener,noreferrer");
                 setIsSubmitting(false);
                 setSubmitted(true);
