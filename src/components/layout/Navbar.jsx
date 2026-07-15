@@ -6,17 +6,13 @@ import logo from "../../assets/logo.png";
 export default function Navbar() {
     const [menuOpen, setMenuOpen] = useState(false);
     const location = useLocation();
-
-    const scrollToSection = (id) => {
-        setMenuOpen(false);
-        if (location.pathname !== "/") {
-            window.location.href = `/#${id}`;
-            return;
-        }
-        window.lenis?.scrollTo(`#${id}`, { duration: 1.5 });
-    };
-
     const [scrolled, setScrolled] = useState(false);
+    const [isLight, setIsLight] = useState(() => {
+        if (typeof window !== "undefined") {
+            return document.documentElement.classList.contains("light");
+        }
+        return false;
+    });
 
     useEffect(() => {
         const handleScroll = () => {
@@ -27,8 +23,32 @@ export default function Navbar() {
             }
         };
         window.addEventListener("scroll", handleScroll);
+        
+        // Sync initial theme
+        const savedTheme = localStorage.getItem("theme");
+        if (savedTheme === "light") {
+            document.documentElement.classList.add("light");
+            setIsLight(true);
+        } else {
+            document.documentElement.classList.remove("light");
+            setIsLight(false);
+        }
+
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
+
+    const toggleTheme = () => {
+        const root = document.documentElement;
+        if (root.classList.contains("light")) {
+            root.classList.remove("light");
+            localStorage.setItem("theme", "dark");
+            setIsLight(false);
+        } else {
+            root.classList.add("light");
+            localStorage.setItem("theme", "light");
+            setIsLight(true);
+        }
+    };
 
     return (
         <header className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled
@@ -48,7 +68,7 @@ export default function Navbar() {
                 </Link>
 
                 {/* Desktop links */}
-                <div className="hidden md:flex items-center gap-8">
+                <div className="hidden md:flex items-center gap-6 lg:gap-8">
                     <Link
                         to="/"
                         className={`text-sm font-medium transition-colors ${location.pathname === "/"
@@ -57,6 +77,16 @@ export default function Navbar() {
                             }`}
                     >
                         Home
+                    </Link>
+
+                    <Link
+                        to="/about-us"
+                        className={`text-sm font-medium transition-colors ${location.pathname === "/about-us"
+                            ? "text-amber-400 border-b-2 border-amber-400 pb-0.5"
+                            : "text-gray-400 hover:text-white"
+                            }`}
+                    >
+                        About Us
                     </Link>
 
                     <Link
@@ -79,51 +109,57 @@ export default function Navbar() {
                         Beyond Classroom
                     </Link>
 
+                    {/* Theme Toggle Button */}
                     <button
-                        onClick={() => scrollToSection("why-us")}
-                        className="nav-link text-sm font-medium text-gray-400 hover:text-white cursor-pointer transition-colors"
+                        onClick={toggleTheme}
+                        aria-label="Toggle theme"
+                        className="text-gray-400 hover:text-amber-400 p-2 rounded-lg transition-colors cursor-pointer"
                     >
-                        Why Us
+                        {isLight ? (
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                            </svg>
+                        ) : (
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
+                            </svg>
+                        )}
                     </button>
 
-                    <button
-                        onClick={() => scrollToSection("courses")}
-                        className="nav-link text-sm font-medium text-gray-400 hover:text-white cursor-pointer transition-colors"
-                    >
-                        Courses
-                    </button>
-
-                    <button
-                        onClick={() => scrollToSection("faculty")}
-                        className="nav-link text-sm font-medium text-gray-400 hover:text-white cursor-pointer transition-colors"
-                    >
-                        Faculty
-                    </button>
-
-                    <button
-                        onClick={() => scrollToSection("toppers")}
-                        className="nav-link text-sm font-medium text-gray-400 hover:text-white cursor-pointer transition-colors"
-                    >
-                        Our Toppers
-                    </button>
-
-                    <button
-                        onClick={() => scrollToSection("enquiry")}
+                    <Link
+                        to="/contact"
                         className="bg-amber-400 text-navy-900 px-5 py-2.5 rounded-lg font-semibold text-sm hover:bg-amber-500 cursor-pointer transition"
                     >
                         Enquire Now
-                    </button>
+                    </Link>
                 </div>
 
-                {/* Mobile hamburger */}
-                <button
-                    className="md:hidden flex flex-col gap-1.5 p-1"
-                    onClick={() => setMenuOpen(!menuOpen)}
-                >
-                    <span className={`block h-0.5 w-6 bg-white transition-all ${menuOpen ? "rotate-45 translate-y-2" : ""}`} />
-                    <span className={`block h-0.5 w-6 bg-white transition-all ${menuOpen ? "opacity-0" : ""}`} />
-                    <span className={`block h-0.5 w-6 bg-white transition-all ${menuOpen ? "-rotate-45 -translate-y-2" : ""}`} />
-                </button>
+                {/* Mobile controls */}
+                <div className="md:hidden flex items-center gap-4">
+                    <button
+                        onClick={toggleTheme}
+                        aria-label="Toggle theme"
+                        className="text-gray-400 hover:text-amber-400 p-1.5 rounded-lg transition-colors cursor-pointer"
+                    >
+                        {isLight ? (
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                            </svg>
+                        ) : (
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
+                            </svg>
+                        )}
+                    </button>
+                    <button
+                        className="flex flex-col gap-1.5 p-1"
+                        onClick={() => setMenuOpen(!menuOpen)}
+                    >
+                        <span className={`block h-0.5 w-6 bg-white transition-all ${menuOpen ? "rotate-45 translate-y-2" : ""}`} stroke="currentColor" />
+                        <span className={`block h-0.5 w-6 bg-white transition-all ${menuOpen ? "opacity-0" : ""}`} stroke="currentColor" />
+                        <span className={`block h-0.5 w-6 bg-white transition-all ${menuOpen ? "-rotate-45 -translate-y-2" : ""}`} stroke="currentColor" />
+                    </button>
+                </div>
             </nav>
 
             {/* Mobile menu */}
@@ -136,6 +172,15 @@ export default function Navbar() {
                             }`}
                     >
                         Home
+                    </Link>
+
+                    <Link
+                        to="/about-us"
+                        onClick={() => setMenuOpen(false)}
+                        className={`text-sm font-medium ${location.pathname === "/about-us" ? "text-amber-400" : "text-gray-400"
+                            }`}
+                    >
+                        About Us
                     </Link>
 
                     <Link
@@ -156,40 +201,13 @@ export default function Navbar() {
                         Beyond Classroom
                     </Link>
 
-                    <button
-                        onClick={() => scrollToSection("why-us")}
-                        className="text-sm font-medium text-gray-400 text-left cursor-pointer"
-                    >
-                        Why Us
-                    </button>
-
-                    <button
-                        onClick={() => scrollToSection("courses")}
-                        className="text-sm font-medium text-gray-400 text-left cursor-pointer"
-                    >
-                        Courses
-                    </button>
-
-                    <button
-                        onClick={() => scrollToSection("faculty")}
-                        className="text-sm font-medium text-gray-400 text-left cursor-pointer"
-                    >
-                        Faculty
-                    </button>
-
-                    <button
-                        onClick={() => scrollToSection("toppers")}
-                        className="text-sm font-medium text-gray-400 text-left cursor-pointer"
-                    >
-                        Our Toppers
-                    </button>
-
-                    <button
-                        onClick={() => scrollToSection("enquiry")}
-                        className="bg-amber-400 text-navy-900 px-5 py-2.5 rounded-lg font-semibold text-sm hover:bg-amber-500 cursor-pointer transition text-left"
+                    <Link
+                        to="/contact"
+                        onClick={() => setMenuOpen(false)}
+                        className="bg-amber-400 text-navy-900 px-5 py-2.5 rounded-lg font-semibold text-sm hover:bg-amber-500 cursor-pointer transition text-center"
                     >
                         Enquire Now
-                    </button>
+                    </Link>
                 </div>
             )}
         </header>

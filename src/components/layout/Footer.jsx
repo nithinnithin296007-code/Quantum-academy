@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { ACADEMY } from "../../constants/academy";
 import logo from "../../assets/logo.png";
 import { handlePhoneClick } from "../../utils/contact";
@@ -56,9 +57,23 @@ export default function Footer() {
             </div>
           )}
         </div>
-        <p className="text-center text-xs text-gray-600 mt-8">
-          © {new Date().getFullYear()} {ACADEMY.name}. All rights reserved.
-        </p>
+        <div className="flex flex-col sm:flex-row justify-between items-center text-xs text-gray-500 mt-8 gap-4">
+          <p>© {new Date().getFullYear()} {ACADEMY.name}. All rights reserved.</p>
+          <div className="flex flex-wrap justify-center gap-6">
+            <Link to="/about-us" className="hover:text-amber-400 transition duration-200">
+              About Us
+            </Link>
+            <Link to="/contact" className="hover:text-amber-400 transition duration-200">
+              Contact Us
+            </Link>
+            <Link to="/privacy-policy" className="hover:text-amber-400 transition duration-200">
+              Privacy Policy
+            </Link>
+            <Link to="/terms-of-service" className="hover:text-amber-400 transition duration-200">
+              Terms & Conditions
+            </Link>
+          </div>
+        </div>
       </div >
     </footer >
   );

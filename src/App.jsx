@@ -1,12 +1,20 @@
+import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { Toaster } from "react-hot-toast";
 import WhatsAppButton from "./components/ui/WhatsAppButton";
 import useLenis from "./hooks/useLenis";
-import Home from "./pages/Home";
-import ThankYou from "./pages/ThankYou";
-import Facilities from "./pages/Facilities";
-import BeyondClassroom from "./pages/BeyondClassroom";
+import LoadingSpinner from "./components/ui/LoadingSpinner";
+
+// Lazy-load page components
+const Home = lazy(() => import("./pages/Home"));
+const ThankYou = lazy(() => import("./pages/ThankYou"));
+const Facilities = lazy(() => import("./pages/Facilities"));
+const BeyondClassroom = lazy(() => import("./pages/BeyondClassroom"));
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
+const TermsOfService = lazy(() => import("./pages/TermsOfService"));
+const AboutUs = lazy(() => import("./pages/AboutUs"));
+const ContactUs = lazy(() => import("./pages/ContactUs"));
 
 function AppContent() {
   useLenis();
@@ -15,12 +23,18 @@ function AppContent() {
     <>
       <WhatsAppButton />
       <AnimatePresence mode="wait" initial={false}>
-        <Routes location={location} key={location.pathname}>
-          <Route path="/" element={<Home />} />
-          <Route path="/thank-you" element={<ThankYou />} />
-          <Route path="/facilities" element={<Facilities />} />
-          <Route path="/beyond-classroom" element={<BeyondClassroom />} />
-        </Routes>
+        <Suspense fallback={<LoadingSpinner />}>
+          <Routes location={location} key={location.pathname}>
+            <Route path="/" element={<Home />} />
+            <Route path="/thank-you" element={<ThankYou />} />
+            <Route path="/facilities" element={<Facilities />} />
+            <Route path="/beyond-classroom" element={<BeyondClassroom />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms-of-service" element={<TermsOfService />} />
+            <Route path="/about-us" element={<AboutUs />} />
+            <Route path="/contact" element={<ContactUs />} />
+          </Routes>
+        </Suspense>
       </AnimatePresence>
     </>
   );

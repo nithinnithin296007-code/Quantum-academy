@@ -4,21 +4,21 @@ export const ACHIEVERS = [
         exam: "Achiever in JEE (Mains)",
         rewards: [
             "Qualifying JEE Mains — Free coaching to JEE Adv.",
-            "Scoring 200+ — Cash reward of ₹30,000+ and free JEE Adv. coaching",
+            "Scoring 200+ — Cash reward of ₹50,000 and free JEE Adv. coaching",
         ],
     },
     {
         id: 2,
         exam: "Achiever in NEET",
         rewards: [
-            "Scoring 620+ — First year complete fees of Medical full-time course borne by Quantum",
+            "Scoring 670+ — First year complete fees of Medical full-time course borne by Quantum",
         ],
     },
     {
         id: 3,
         exam: "Achiever in MHT-CET",
         rewards: [
-            "Securing 98 Percentile+ — Cash reward of ₹20,000",
+            "Securing 99.66 Percentile+ — Cash reward of ₹20,000",
         ],
     },
     {

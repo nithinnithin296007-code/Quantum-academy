@@ -89,3 +89,83 @@ input:focus, select:focus, textarea:focus {
 .card-hover:hover {
   transform: translateY(-4px);
 }
+
+/* Light Theme Overrides */
+html.light body {
+  background-color: #f8fafc;
+  color: #334155;
+}
+
+html.light .bg-\[\#07091a\], 
+html.light .bg-\[\#0b0e24\] {
+  background-color: #f8fafc !important;
+}
+
+html.light .bg-navy-900 {
+  background-color: #f1f5f9 !important;
+}
+
+html.light .bg-white\/5,
+html.light .bg-white\/\[0\.02\] {
+  background-color: #ffffff !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+}
+
+html.light .bg-white\/\[0\.03\] {
+  background-color: #f1f5f9 !important;
+}
+
+html.light .border-white\/10,
+html.light .border-white\/5 {
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+html.light .text-white {
+  color: #0f172a !important;
+}
+
+html.light .text-gray-400 {
+  color: #475569 !important;
+}
+
+html.light .text-gray-300 {
+  color: #334155 !important;
+}
+
+html.light .text-gray-500 {
+  color: #64748b !important;
+}
+
+html.light .text-amber-400 {
+  color: #d97706 !important; /* Higher contrast amber for light background */
+}
+
+/* Scrolled Header theme adjustments */
+html.light header.bg-\[\#07091a\]\/90 {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+html.light header a, 
+html.light header button {
+  color: #334155 !important;
+}
+
+html.light header a:hover, 
+html.light header button:hover {
+  color: #d97706 !important;
+}
+
+html.light header .text-white {
+  color: #0f172a !important;
+}
+
+/* Mobile Menu background & hamburger overrides */
+html.light header .md\:hidden.bg-\[\#07091a\] {
+  background-color: #ffffff !important;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+html.light header span.bg-white {
+  background-color: #334155 !important;
+}

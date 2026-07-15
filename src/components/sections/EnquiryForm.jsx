@@ -85,6 +85,14 @@ export default function EnquiryForm() {
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
     const onSubmit = (data) => {
+        // Honeypot check for spam prevention
+        if (data.website) {
+            console.warn("Spam submission blocked");
+            setSubmitted(true);
+            reset();
+            return;
+        }
+
         setIsSubmitting(true);
 
         const text = `Hello Quantum Academy,
@@ -148,6 +156,17 @@ Please share details regarding batch timings, fee structure, and next steps. Tha
                             className="bg-white rounded-2xl p-8 space-y-5 shadow-xl"
                             noValidate
                         >
+                            {/* Honeypot field for bot/spam prevention */}
+                            <div className="hidden" aria-hidden="true">
+                                <input
+                                    type="text"
+                                    id="website"
+                                    {...register("website")}
+                                    tabIndex={-1}
+                                    autoComplete="off"
+                                />
+                            </div>
+
                             <div>
                                 <label htmlFor="name" className="text-sm font-medium text-gray-700">Student Name *</label>
                                 <input id="name" {...register("name", { required: "Name is required" })}
