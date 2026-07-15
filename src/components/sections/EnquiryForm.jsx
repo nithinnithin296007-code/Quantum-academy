@@ -96,22 +96,19 @@ export default function EnquiryForm() {
         setIsSubmitting(true);
 
         const classText = data.targetClass === "Dropper" ? "Dropper Batch" : `Class ${data.targetClass}`;
-        const text = `Hello Quantum Academy Team! \u{1F44B}
+        const text = `Hello Quantum Academy,
 
-I am looking to enroll ${data.name} in your ${data.targetClass === "Dropper" ? "Dropper batch" : `Class ${data.targetClass} program`} for ${data.exam}. Could you please share some admission details?
+I would like to inquire about admission details.
 
-*Student Profile:*
-• *Student Name:* ${data.name}
-• *Class/Batch:* ${classText}
-• *Target Exam:* ${data.exam}
-• *Contact Number:* ${data.mobile} \u{1F4DE}
-${data.message.trim() ? `• *Additional Message:* ${data.message.trim()}\n` : ""}
-*I'd love to know more about:*
-• \u{1F552} *Batch Timings* (specifically for ${classText})
-• \u{1F4B3} *Fee Structure* & options
-• \u{1F680} *Next Steps* to initiate enrollment
+Student Details:
+- Name: ${data.name}
+- Class/Batch: ${classText}
+- Target Exam: ${data.exam}
+- Contact: ${data.mobile}
+${data.message.trim() ? `- Message: ${data.message.trim()}\n` : ""}
+Please provide the batch timings, fee structure, and enrollment next steps.
 
-Thank you! Looking forward to hearing from you.`;
+Thank you.`;
 
         const encodedText = encodeURIComponent(text);
         const whatsappUrl = `https://wa.me/${ACADEMY.whatsapp}?text=${encodedText}`;
