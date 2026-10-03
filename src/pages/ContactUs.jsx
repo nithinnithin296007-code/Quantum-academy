@@ -14,7 +14,7 @@ const contactSchema = {
     "mainEntity": {
         "@type": "LocalBusiness",
         "name": "Quantum Academy",
-        "telephone": "+918169101977",
+        "telephone": "+917400478707",
         "email": "support@quantumedu.co.in",
         "address": {
             "@type": "PostalAddress",

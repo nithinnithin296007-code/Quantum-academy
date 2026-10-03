@@ -1,5 +1,11 @@
 export const FACULTY = [
     {
+        id: 1,
+        name: "Prof. Jaitin",
+        title: "Faculty",
+        credentials: "IIT Delhi",
+    },
+    {
         id: 2,
         name: "Prof. Ghanshyam Gupta",
         title: "Faculty",

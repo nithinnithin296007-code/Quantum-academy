@@ -7,6 +7,7 @@ export default function Button({ children, variant = "primary", onClick, type = 
     secondary: "bg-navy-700 text-white hover:bg-navy-900",
     outline:   "border-2 border-navy-700 text-navy-700 hover:bg-navy-700 hover:text-white",
     ghost:     "text-navy-700 hover:underline",
+    whatsapp:  "bg-[#25D366] text-white hover:bg-[#20bd5a] shadow-lg shadow-emerald-500/20",
   };
   return (
     <motion.button

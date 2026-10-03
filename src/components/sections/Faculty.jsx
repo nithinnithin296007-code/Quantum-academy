@@ -21,7 +21,7 @@ export default function Faculty({
                     </p>
                 )}
 
-                <div className="grid md:grid-cols-2 gap-6 mt-16">
+                <div className="grid md:grid-cols-2 gap-6 mt-16 [&>*:last-child:nth-child(odd)]:md:col-span-2 [&>*:last-child:nth-child(odd)]:md:max-w-md [&>*:last-child:nth-child(odd)]:md:mx-auto [&>*:last-child:nth-child(odd)]:w-full">
                     {members.map((member) => (
                         <FacultyCard key={member.id} {...member} />
                     ))}

@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
 import './TiltedCard.css';
 
@@ -12,18 +12,28 @@ export default function TiltedCard({
     imageSrc,
     altText = 'Tilted card image',
     captionText = '',
-    containerHeight = '300px',
+    containerHeight = '100%',
     containerWidth = '100%',
-    imageHeight = '300px',
-    imageWidth = '300px',
-    scaleOnHover = 1.1,
-    rotateAmplitude = 14,
-    showMobileWarning = false,
+    imageHeight = '100%',
+    imageWidth = '100%',
+    scaleOnHover = 1.05,
+    rotateAmplitude = 10,
     showTooltip = true,
     overlayContent = null,
     displayOverlayContent = false
 }) {
     const ref = useRef(null);
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth < 768 || window.matchMedia('(hover: none)').matches);
+        };
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+
     const x = useMotionValue(0);
     const y = useMotionValue(0);
     const rotateX = useSpring(useMotionValue(0), springValues);
@@ -38,7 +48,7 @@ export default function TiltedCard({
     const [lastY, setLastY] = useState(0);
 
     function handleMouse(e) {
-        if (!ref.current) return;
+        if (isMobile || !ref.current) return;
         const rect = ref.current.getBoundingClientRect();
         const offsetX = e.clientX - rect.left - rect.width / 2;
         const offsetY = e.clientY - rect.top - rect.height / 2;
@@ -58,11 +68,13 @@ export default function TiltedCard({
     }
 
     function handleMouseEnter() {
+        if (isMobile) return;
         scale.set(scaleOnHover);
         opacity.set(1);
     }
 
     function handleMouseLeave() {
+        if (isMobile) return;
         opacity.set(0);
         scale.set(1);
         rotateX.set(0);
@@ -73,30 +85,27 @@ export default function TiltedCard({
     return (
         <figure
             ref={ref}
-            className="tilted-card-figure"
+            className="tilted-card-figure w-full h-full"
             style={{ height: containerHeight, width: containerWidth }}
             onMouseMove={handleMouse}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >
-            {showMobileWarning && (
-                <div className="tilted-card-mobile-alert">This effect is not optimized for mobile. Check on desktop.</div>
-            )}
             <motion.div
-                className="tilted-card-inner"
-                style={{ width: imageWidth, height: imageHeight, rotateX, rotateY, scale }}
+                className="tilted-card-inner w-full h-full"
+                style={{ width: isMobile ? '100%' : imageWidth, height: isMobile ? '100%' : imageHeight, rotateX: isMobile ? 0 : rotateX, rotateY: isMobile ? 0 : rotateY, scale: isMobile ? 1 : scale }}
             >
                 <motion.img
                     src={imageSrc}
                     alt={altText}
-                    className="tilted-card-img"
-                    style={{ width: imageWidth, height: imageHeight }}
+                    className="tilted-card-img w-full h-full object-cover"
+                    style={{ width: isMobile ? '100%' : imageWidth, height: isMobile ? '100%' : imageHeight }}
                 />
                 {displayOverlayContent && overlayContent && (
                     <motion.div className="tilted-card-overlay">{overlayContent}</motion.div>
                 )}
             </motion.div>
-            {showTooltip && (
+            {showTooltip && !isMobile && (
                 <motion.figcaption
                     className="tilted-card-caption"
                     style={{ x, y, opacity, rotate: rotateFigcaption }}

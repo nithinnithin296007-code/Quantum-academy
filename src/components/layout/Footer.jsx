@@ -37,7 +37,19 @@ export default function Footer() {
             <a href={`mailto:${ACADEMY.email}`} className="hover:text-amber-400 transition">
               ✉️ {ACADEMY.email}
             </a>
-            <a href={`https://wa.me/${ACADEMY.whatsapp}`} target="_blank" rel="noreferrer" className="hover:text-amber-400 transition">
+            <a
+              href="#enquiry"
+              onClick={(e) => {
+                const el = document.getElementById("enquiry");
+                if (el) {
+                  e.preventDefault();
+                  el.scrollIntoView({ behavior: "smooth" });
+                  const input = document.getElementById("name");
+                  if (input) setTimeout(() => input.focus(), 400);
+                }
+              }}
+              className="hover:text-amber-400 transition"
+            >
               💬 WhatsApp Us
             </a>
             <a href={ACADEMY.instagram} target="_blank" rel="noreferrer" className="hover:text-amber-400 transition">

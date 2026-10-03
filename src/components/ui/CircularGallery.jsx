@@ -25,8 +25,6 @@ function autoBind(instance) {
 }
 
 const DEFAULT_FONT = 'bold 30px Figtree';
-// Figtree is not guaranteed to be available on the host page, so the component
-// loads it on demand whenever the default font is used.
 const DEFAULT_FONT_URL = 'https://fonts.googleapis.com/css2?family=Figtree:wght@400;700&display=swap';
 
 function deriveFontFamilyFromUrl(url) {
@@ -79,23 +77,15 @@ async function loadCustomFont(fontUrl) {
     return isStylesheet ? loadFontFromStylesheet(fontUrl) : loadFontFromFile(fontUrl);
 }
 
-// Loads `fontUrl` (a stylesheet such as a Google Fonts URL, or a direct font
-// file) and returns a canvas-ready font string that keeps the size/weight from
-// `font` but swaps in the freshly loaded family. Falls back to `font` on error.
 async function resolveFont(font, fontUrl) {
-    // Use the bundled Figtree stylesheet when the caller relies on the default
-    // font, otherwise honor the explicit `fontUrl`.
     const effectiveUrl = fontUrl || (font === DEFAULT_FONT ? DEFAULT_FONT_URL : null);
     if (!effectiveUrl) {
-        // A custom family was supplied without a URL – make sure it is ready (in
-        // case the host page declares it) before we draw it to the canvas,
-        // otherwise the first paint silently falls back to a system font.
         if (document.fonts && document.fonts.load) {
             try {
                 await document.fonts.load(font);
                 await document.fonts.ready;
             } catch {
-                // Ignore – fall back to whatever the browser provides.
+                // Fall back
             }
         }
         return font;
@@ -109,7 +99,7 @@ async function resolveFont(font, fontUrl) {
             try {
                 await document.fonts.load(resolved);
             } catch {
-                // Ignore – we still attempt to render with the requested font.
+                // Ignore
             }
         }
         return resolved;
@@ -207,10 +197,11 @@ class Media {
     viewport,
     bend,
     textColor = '#ffffff',
-    borderRadius = 0,
+    borderRadius = 0.05,
     font,
-    planeWidth,
-    planeHeight
+    planeWidth = 700,
+    planeHeight = 900,
+    showTitle = true
 }) {
         this.extra = 0;
         this.geometry = geometry;
@@ -229,6 +220,7 @@ class Media {
         this.font = font;
         this.planeWidth = planeWidth;
         this.planeHeight = planeHeight;
+        this.showTitle = showTitle;
         this.createShader();
         this.createMesh();
         this.createTitle();
@@ -271,23 +263,31 @@ class Media {
         }
         
         void main() {
-          vec2 ratio = vec2(
-            min((uPlaneSizes.x / uPlaneSizes.y) / (uImageSizes.x / uImageSizes.y), 1.0),
-            min((uPlaneSizes.y / uPlaneSizes.x) / (uImageSizes.y / uImageSizes.x), 1.0)
-          );
-          vec2 uv = vec2(
-            vUv.x * ratio.x + (1.0 - ratio.x) * 0.5,
-            vUv.y * ratio.y + (1.0 - ratio.y) * 0.5
-          );
+          // Object-contain shader logic: guarantees 100% of the poster image
+          // is displayed without cutting off left/right digits or top/bottom headers
+          float planeAspect = uPlaneSizes.x / uPlaneSizes.y;
+          float imageAspect = (uImageSizes.x > 0.0 && uImageSizes.y > 0.0) ? (uImageSizes.x / uImageSizes.y) : 1.0;
+          
+          vec2 uv = vUv;
+          if (planeAspect < imageAspect) {
+            float s = planeAspect / imageAspect;
+            uv.y = (vUv.y - 0.5) / s + 0.5;
+          } else {
+            float s = imageAspect / planeAspect;
+            uv.x = (vUv.x - 0.5) / s + 0.5;
+          }
+
+          if (uv.x < 0.0 || uv.x > 1.0 || uv.y < 0.0 || uv.y > 1.0) {
+            discard;
+          }
+
           vec4 color = texture2D(tMap, uv);
           
           float d = roundedBoxSDF(vUv - 0.5, vec2(0.5 - uBorderRadius), uBorderRadius);
-          
-          // Smooth antialiasing for edges
           float edgeSmooth = 0.002;
           float alpha = 1.0 - smoothstep(-edgeSmooth, edgeSmooth, d);
           
-          gl_FragColor = vec4(color.rgb, alpha);
+          gl_FragColor = vec4(color.rgb, color.a * alpha);
         }
       `,
             uniforms: {
@@ -316,6 +316,7 @@ class Media {
         this.plane.setParent(this.scene);
     }
     createTitle() {
+        if (!this.showTitle || !this.text) return;
         this.title = new Title({
             gl: this.gl,
             plane: this.plane,
@@ -374,7 +375,7 @@ class Media {
                 this.plane.program.uniforms.uViewportSizes.value = [this.viewport.width, this.viewport.height];
             }
         }
-        this.scale = this.screen.height / 1500;
+        this.scale = this.screen.height / 1380;
         this.plane.scale.y = (this.viewport.height * ((this.planeHeight || 900) * this.scale)) / this.screen.height;
         this.plane.scale.x = (this.viewport.width * ((this.planeWidth || 700) * this.scale)) / this.screen.width;
         this.plane.program.uniforms.uPlaneSizes.value = [this.plane.scale.x, this.plane.scale.y];
@@ -392,12 +393,13 @@ class App {
             items,
             bend,
             textColor = '#ffffff',
-            borderRadius = 0,
+            borderRadius = 0.05,
             font = 'bold 30px Figtree',
             scrollSpeed = 2,
             scrollEase = 0.05,
             planeWidth = 700,
-            planeHeight = 900
+            planeHeight = 900,
+            showTitle = true
         } = {}
     ) {
         document.documentElement.classList.remove('no-js');
@@ -410,7 +412,7 @@ class App {
         this.createScene();
         this.onResize();
         this.createGeometry();
-        this.createMedias(items, bend, textColor, borderRadius, font, planeWidth, planeHeight);
+        this.createMedias(items, bend, textColor, borderRadius, font, planeWidth, planeHeight, showTitle);
         this.update();
         this.addEventListeners();
     }
@@ -434,24 +436,13 @@ class App {
     }
     createGeometry() {
         this.planeGeometry = new Plane(this.gl, {
-            heightSegments: 50,
-            widthSegments: 100
+            heightSegments: 8,
+            widthSegments: 16
         });
     }
-    createMedias(items, bend = 1, textColor, borderRadius, font, planeWidth, planeHeight) {
+    createMedias(items, bend = 1, textColor, borderRadius, font, planeWidth, planeHeight, showTitle = true) {
         const defaultItems = [
-            { image: `https://picsum.photos/seed/1/800/600?grayscale`, text: 'Bridge' },
-            { image: `https://picsum.photos/seed/2/800/600?grayscale`, text: 'Desk Setup' },
-            { image: `https://picsum.photos/seed/3/800/600?grayscale`, text: 'Waterfall' },
-            { image: `https://picsum.photos/seed/4/800/600?grayscale`, text: 'Strawberries' },
-            { image: `https://picsum.photos/seed/5/800/600?grayscale`, text: 'Deep Diving' },
-            { image: `https://picsum.photos/seed/16/800/600?grayscale`, text: 'Train Track' },
-            { image: `https://picsum.photos/seed/17/800/600?grayscale`, text: 'Santorini' },
-            { image: `https://picsum.photos/seed/8/800/600?grayscale`, text: 'Blurry Lights' },
-            { image: `https://picsum.photos/seed/9/800/600?grayscale`, text: 'New York' },
-            { image: `https://picsum.photos/seed/10/800/600?grayscale`, text: 'Good Boy' },
-            { image: `https://picsum.photos/seed/21/800/600?grayscale`, text: 'Coastline' },
-            { image: `https://picsum.photos/seed/12/800/600?grayscale`, text: 'Palm Trees' }
+            { image: `https://picsum.photos/seed/1/800/600?grayscale`, text: 'Bridge' }
         ];
         const galleryItems = items && items.length ? items : defaultItems;
         this.mediasImages = galleryItems.concat(galleryItems);
@@ -472,7 +463,8 @@ class App {
                 borderRadius,
                 font,
                 planeWidth,
-                planeHeight
+                planeHeight,
+                showTitle
             });
         });
     }
@@ -488,6 +480,7 @@ class App {
         this.scroll.target = this.scroll.position + distance;
     }
     onTouchUp() {
+        if (!this.isDown) return;
         this.isDown = false;
         this.onCheck();
     }
@@ -564,34 +557,34 @@ class App {
         this.boundOnKeyDown = this.onKeyDown.bind(this);
 
         window.addEventListener('resize', this.boundOnResize);
-        window.addEventListener('mousewheel', this.boundOnWheel);
-        window.addEventListener('wheel', this.boundOnWheel);
-        window.addEventListener('mousedown', this.boundOnTouchDown);
+
+        if (this.container) {
+            this.container.addEventListener('wheel', this.boundOnWheel, { passive: true });
+            this.container.addEventListener('mousedown', this.boundOnTouchDown);
+            this.container.addEventListener('touchstart', this.boundOnTouchDown, { passive: true });
+            this.container.addEventListener('keydown', this.boundOnKeyDown);
+        }
+
         window.addEventListener('mousemove', this.boundOnTouchMove);
         window.addEventListener('mouseup', this.boundOnTouchUp);
-        window.addEventListener('touchstart', this.boundOnTouchDown);
-        window.addEventListener('touchmove', this.boundOnTouchMove);
+        window.addEventListener('touchmove', this.boundOnTouchMove, { passive: true });
         window.addEventListener('touchend', this.boundOnTouchUp);
-
-        this.container?.addEventListener('keydown', this.boundOnKeyDown);
     }
     destroy() {
         window.cancelAnimationFrame(this.raf);
         window.removeEventListener('resize', this.boundOnResize);
-        window.removeEventListener('mousewheel', this.boundOnWheel);
-        window.removeEventListener('wheel', this.boundOnWheel);
-        window.removeEventListener('mousedown', this.boundOnTouchDown);
+        if (this.container) {
+            this.container.removeEventListener('wheel', this.boundOnWheel);
+            this.container.removeEventListener('mousedown', this.boundOnTouchDown);
+            this.container.removeEventListener('touchstart', this.boundOnTouchDown);
+            this.container.removeEventListener('keydown', this.boundOnKeyDown);
+        }
         window.removeEventListener('mousemove', this.boundOnTouchMove);
         window.removeEventListener('mouseup', this.boundOnTouchUp);
-        window.removeEventListener('touchstart', this.boundOnTouchDown);
         window.removeEventListener('touchmove', this.boundOnTouchMove);
         window.removeEventListener('touchend', this.boundOnTouchUp);
         if (this.renderer && this.renderer.gl && this.renderer.gl.canvas.parentNode) {
             this.renderer.gl.canvas.parentNode.removeChild(this.renderer.gl.canvas);
-        }
-
-        if (this.container) {
-            this.container.removeEventListener('keydown', this.boundOnKeyDown);
         }
     }
 }
@@ -599,14 +592,15 @@ class App {
 export default function CircularGallery({
     items,
     bend = 3,
-    textColor = '#ffffff',
+    textColor = '#F5A623',
     borderRadius = 0.05,
-    font = 'bold 30px Figtree',
-    fontUrl,
+    font = 'bold 22px Poppins',
+    fontUrl = 'https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap',
     scrollSpeed = 2,
-    scrollEase = 0.05,
-    planeWidth = 700,
-    planeHeight = 900
+    scrollEase = 0.08,
+    planeWidth = 720,
+    planeHeight = 880,
+    showTitle = true
 }) {
     const containerRef = useRef(null);
     useEffect(() => {
@@ -624,7 +618,8 @@ export default function CircularGallery({
                 scrollSpeed,
                 scrollEase,
                 planeWidth,
-                planeHeight
+                planeHeight,
+                showTitle
             });
         });
 
@@ -632,14 +627,14 @@ export default function CircularGallery({
             isMounted = false;
             if (app) app.destroy();
         };
-    }, [items, bend, textColor, borderRadius, font, fontUrl, scrollSpeed, scrollEase, planeWidth, planeHeight]);
+    }, [items, bend, textColor, borderRadius, font, fontUrl, scrollSpeed, scrollEase, planeWidth, planeHeight, showTitle]);
     return (
         <div
-            className="circular-gallery"
+            className="circular-gallery gpu-layer"
             ref={containerRef}
             tabIndex={0}
             role="region"
-            aria-label="Circular image gallery. Use left and right arrow keys to navigate."
+            aria-label="Circular image gallery"
         />
     );
 }

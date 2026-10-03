@@ -2,10 +2,20 @@
     width: 100%;
     height: 100%;
     outline: none;
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-user-select: none;
+    position: relative;
+    overflow: hidden;
 }
 
 .circular-gallery canvas {
     width: 100%;
     height: 100%;
     display: block;
+    cursor: grab;
+}
+
+.circular-gallery canvas:active {
+    cursor: grabbing;
 }

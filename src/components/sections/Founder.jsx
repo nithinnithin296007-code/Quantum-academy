@@ -2,17 +2,17 @@ import TiltedCard from "../ui/TiltedCard";
 
 export default function Founder({ name, title, bio, photo, instagram }) {
     return (
-        <section id="founder" className="bg-white py-28 px-6 relative overflow-hidden">
-            <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-16 relative z-10">
-                <div className="flex-shrink-0 w-full md:w-[420px]">
+        <section id="founder" className="bg-white py-20 md:py-28 px-6 relative overflow-hidden">
+            <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12 md:gap-16 relative z-10">
+                <div className="flex-shrink-0 w-full max-w-sm md:max-w-none md:w-[420px] aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl">
                     {photo ? (
                         <TiltedCard
                             imageSrc={photo}
                             altText={name}
                             captionText={name}
-                            containerHeight="525px"
+                            containerHeight="100%"
                             containerWidth="100%"
-                            imageHeight="525px"
+                            imageHeight="100%"
                             imageWidth="100%"
                             rotateAmplitude={10}
                             scaleOnHover={1.05}
@@ -23,15 +23,15 @@ export default function Founder({ name, title, bio, photo, instagram }) {
                         </div>
                     )}
                 </div>
-                <div>
-                    <span className="text-amber-500 font-semibold text-sm uppercase tracking-[0.25em]">
+                <div className="text-center md:text-left">
+                    <span className="text-amber-500 font-semibold text-xs md:text-sm uppercase tracking-[0.25em]">
                         Meet the Founder
                     </span>
-                    <h2 className="text-5xl md:text-6xl font-display font-black text-navy-700 mt-3">
+                    <h2 className="text-4xl md:text-6xl font-display font-black text-navy-700 mt-3">
                         {name}
                     </h2>
-                    <p className="text-gray-500 text-lg mt-2">{title}</p>
-                    <p className="text-gray-600 text-lg mt-6 leading-relaxed max-w-xl">{bio}</p>
+                    <p className="text-amber-600 font-medium text-base md:text-lg mt-2">{title}</p>
+                    <p className="text-gray-600 text-base md:text-lg mt-6 leading-relaxed max-w-xl">{bio}</p>
                     {instagram && (
                         <a
                             href={instagram}
@@ -42,8 +42,8 @@ export default function Founder({ name, title, bio, photo, instagram }) {
                             Follow on Instagram
                         </a>
                     )}
+                </div>
             </div>
-        </div>
-        </section >
+        </section>
     );
 }

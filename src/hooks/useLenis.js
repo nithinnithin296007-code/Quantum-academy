@@ -4,26 +4,28 @@ import Lenis from "lenis";
 export default function useLenis() {
     useEffect(() => {
         const lenis = new Lenis({
-            duration: 1.4, // Luxuriously smooth deceleration
-            easing: (t) => 1 - Math.pow(1 - t, 5), // easeOutQuint: highly organic speed decay
+            duration: 1.1,
+            easing: (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)),
             smoothWheel: true,
-            smoothTouch: true, // Smooth scrolling on trackpads/touch screens
-            touchMultiplier: 1.2,
-            wheelMultiplier: 0.95, // Softens mouse scrolling jumps
+            smoothTouch: false, // Native momentum scrolling on touch/mobile for instant responsiveness
+            wheelMultiplier: 1.0,
+            touchMultiplier: 1.5,
             infinite: false,
         });
 
         // Register globally for custom components/navbar to trigger scrollTo
         window.lenis = lenis;
 
+        let animationFrameId;
         function raf(time) {
             lenis.raf(time);
-            requestAnimationFrame(raf);
+            animationFrameId = requestAnimationFrame(raf);
         }
 
-        requestAnimationFrame(raf);
+        animationFrameId = requestAnimationFrame(raf);
 
         return () => {
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
             lenis.destroy();
             window.lenis = null;
         };

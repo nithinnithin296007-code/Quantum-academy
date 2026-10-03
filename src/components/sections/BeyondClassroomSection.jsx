@@ -2,6 +2,12 @@ import { useState } from "react";
 
 const REELS = [
     {
+        id: 4,
+        title: "Ganesh Utsav Celebration",
+        desc: "Vibrant festive celebrations with music, traditional dancing, and Ganesh Visarjan at the academy.",
+        src: "/videos/video-47180.mp4",
+    },
+    {
         id: 1,
         title: "Picnic Day Outings",
         desc: "A day out for students to unwind, play, and build strong bonds together outside academic hours.",
