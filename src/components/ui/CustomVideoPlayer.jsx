@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import SloshGauge from '../ui/SloshGauge';
+import useIsMobile from '../../hooks/useIsMobile';
 
 export default function CustomVideoPlayer({ src }) {
     const videoRef = useRef(null);
@@ -9,6 +10,7 @@ export default function CustomVideoPlayer({ src }) {
     const [isLightbox, setIsLightbox] = useState(false);
     const [showUnmutePrompt, setShowUnmutePrompt] = useState(false);
     const [isInView, setIsInView] = useState(false);
+    const isMobile = useIsMobile();
 
     // Handle intersection observer to play/pause based on visibility
     useEffect(() => {
@@ -161,13 +163,13 @@ export default function CustomVideoPlayer({ src }) {
                     ref={videoRef}
                     src={src}
                     className="w-full h-full object-cover cursor-pointer"
-                    onClick={togglePlay}
+                    onClick={isMobile ? undefined : togglePlay}
                     playsInline
                     loop
                 />
                 
                 {/* Controls Overlay */}
-                <div className={`absolute inset-0 transition-opacity duration-300 flex flex-col justify-end p-2 sm:p-3 pointer-events-none ${!isPlaying || isLightbox ? 'opacity-100 bg-black/20' : 'opacity-0 sm:group-hover:opacity-100 sm:group-hover:bg-black/20'}`}>
+                <div className={`absolute inset-0 transition-opacity duration-300 flex flex-col justify-end p-2 sm:p-3 pointer-events-none ${(!isPlaying || isLightbox) ? 'opacity-100 bg-black/20' : 'opacity-100 sm:opacity-0 sm:group-hover:opacity-100 bg-transparent sm:group-hover:bg-black/20'}`}>
                     
                     <div className="flex items-center bg-navy-900/90 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 pointer-events-auto shadow-lg mx-auto w-max gap-3 sm:gap-6">
                         <div className="flex items-center gap-2 sm:gap-3">
