@@ -45,9 +45,9 @@ export default function WallOfFame() {
 
                 <p className="text-gray-500 mt-4 text-sm">
                     Rated{" "}
-                    <span className="text-amber-500 font-bold">{ACADEMY.justdialRating}★</span>
+                    <span className="text-amber-500 font-bold">{ACADEMY.googleRating}★</span>
                     {" · "}
-                    {ACADEMY.justdialReviews} reviews on Justdial
+                    {ACADEMY.googleReviews} reviews on Google
                 </p>
                 <div className="flex items-center justify-center gap-4 mt-6">
                     <div className="h-px w-16 bg-amber-400/60" />

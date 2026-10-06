@@ -17,6 +17,6 @@ export const WHY_US = [
     {
         id: 4,
         title: "Trusted Locally",
-        description: "Rated 4.9★ from 90+ reviews on Justdial.",
+        description: "Rated 4.8★ from 90+ reviews on Google.",
     },
 ];

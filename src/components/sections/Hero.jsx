@@ -59,13 +59,13 @@ export default function Hero() {
 
                 <p className="text-white/50 mt-6 text-base max-w-lg leading-relaxed mx-auto">
                     Bhayandar East's most trusted Science coaching for Class XI and XII —
-                    4.9★ on Justdial, with toppers at NIT, SPIT and GMC.
+                    4.8★ on Google, with toppers at NIT, SPIT and GMC.
                 </p>
 
                 {/* Stat counters with staggered pop-in */}
                 <div className="flex gap-10 mt-10 mb-10 justify-center">
                     {[
-                        { value: "4.9★", label: "Justdial Rating" },
+                        { value: "4.8★", label: "Google Rating" },
                         { value: "90+", label: "Reviews" },
                         { value: "99%ile", label: "Top Score" },
                     ].map((stat, i) => (
