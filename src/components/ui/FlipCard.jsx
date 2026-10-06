@@ -8,7 +8,8 @@ import {
   useMotionValue,
   useReducedMotion,
   useSpring,
-  useTransform
+  useTransform,
+  useInView
 } from 'motion/react';
 
 import './FlipCard.css';
@@ -104,6 +105,25 @@ export default function FlipCard({
     sheen.set(0);
     lift.set(1);
   };
+
+  const [hasWobbled, setHasWobbled] = useState(false);
+  const isInView = useInView(rootRef, { once: true, margin: "0px 0px -50px 0px" });
+
+  useEffect(() => {
+    if (isInView && !hasWobbled && !reduce && !disabled) {
+      setHasWobbled(true);
+      const timer = setTimeout(() => {
+        if (grip.current) return;
+        const current = turn.get();
+        // A gentle, inviting wobble
+        animate(turn, [current, current + 20, current], {
+          duration: 0.8,
+          ease: "easeInOut",
+        });
+      }, 500); // Small delay after scrolling into view
+      return () => clearTimeout(timer);
+    }
+  }, [isInView, hasWobbled, reduce, disabled, turn]);
 
   useEffect(() => {
     if (!controlled || isBack(target.current) === flipped) return;
