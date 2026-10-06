@@ -25,36 +25,36 @@ export default function WallOfFame() {
     const isMobile = useIsMobile();
 
     return (
-        <section id="toppers" className="bg-[#07091a]">
+        <section id="toppers" className="bg-[#f4f7fc]">
 
             {/* Header */}
-            <div className="text-center pt-20 pb-6 px-4">
-                <span className="text-amber-400 font-semibold text-xs uppercase tracking-[0.3em]">
+            <div className="text-center pt-24 pb-6 px-4">
+                <span className="text-amber-500 font-semibold text-xs uppercase tracking-[0.3em]">
                     Wall of Fame
                 </span>
-                <h2 className="text-4xl md:text-6xl font-display font-black text-white mt-4">
+                <h2 className="text-4xl md:text-6xl font-display font-black text-navy-700 mt-4">
                     Our Toppers
                 </h2>
                 
                 {/* MHT-CET 2026 Note */}
-                <div className="inline-block mt-4 px-4 py-1.5 rounded-full bg-amber-400/10 border border-amber-400/20 backdrop-blur-sm shadow-[0_0_15px_rgba(251,191,36,0.1)]">
-                    <p className="text-amber-400 font-medium text-sm flex items-center gap-2">
-                        <span>🏆</span> Outstanding MHT-CET (2026) Results
+                <div className="inline-block mt-4 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 backdrop-blur-sm shadow-[0_0_15px_rgba(245,158,11,0.05)]">
+                    <p className="text-amber-600 font-medium text-sm flex items-center gap-2">
+                        <span>🏆</span> Outstanding Results
                     </p>
                 </div>
 
                 <p className="text-gray-500 mt-4 text-sm">
                     Rated{" "}
-                    <span className="text-amber-400 font-bold">{ACADEMY.justdialRating}★</span>
+                    <span className="text-amber-500 font-bold">{ACADEMY.justdialRating}★</span>
                     {" · "}
                     {ACADEMY.justdialReviews} reviews on Justdial
                 </p>
                 <div className="flex items-center justify-center gap-4 mt-6">
-                    <div className="h-px w-16 bg-amber-400/40" />
+                    <div className="h-px w-16 bg-amber-400/60" />
                     <div className="w-1.5 h-1.5 rounded-full bg-amber-400" />
-                    <div className="h-px w-16 bg-amber-400/40" />
+                    <div className="h-px w-16 bg-amber-400/60" />
                 </div>
-                <p className="text-gray-600 text-xs mt-6 animate-pulse">
+                <p className="text-gray-400 text-xs mt-6 animate-pulse">
                     {isMobile ? "Swipe to explore" : "Drag or scroll to explore"}
                 </p>
             </div>
@@ -69,21 +69,21 @@ export default function WallOfFame() {
                             return (
                                 <div
                                     key={index}
-                                    className="w-[320px] flex-shrink-0 snap-center bg-navy-900/40 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden shadow-xl"
+                                    className="w-[320px] flex-shrink-0 snap-center bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-xl"
                                 >
-                                    <div className="aspect-[4/5] w-full relative overflow-hidden bg-[#07091a] flex items-center justify-center">
+                                    <div className="aspect-[4/5] w-full relative overflow-hidden bg-slate-50 flex items-center justify-center p-2">
                                         <img
                                             src={item.image}
                                             alt={item.text}
-                                            className="w-full h-full object-contain"
+                                            className="w-full h-full object-contain drop-shadow-md rounded-xl"
                                             loading="lazy"
                                         />
                                     </div>
-                                    <div className="p-4 text-center bg-[#0d1730]/80 border-t border-white/5">
-                                        <p className="text-amber-400 font-display font-bold text-sm tracking-wide">
+                                    <div className="p-4 text-center bg-white border-t border-gray-100">
+                                        <p className="text-navy-700 font-display font-bold text-sm tracking-wide">
                                             {name}
                                         </p>
-                                        <p className="text-white/60 text-xs mt-1 font-medium">
+                                        <p className="text-amber-600 text-xs mt-1 font-bold">
                                             {score}
                                         </p>
                                     </div>

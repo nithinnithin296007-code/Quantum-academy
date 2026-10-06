@@ -22,6 +22,8 @@ export default function Home() {
         <main>
             <Navbar />
             <Hero />
+            <WallOfFame />
+            <AchieverRewards />
             <WhyUs />
             <MissionVision />
             <Founder {...FOUNDER} />
@@ -30,8 +32,6 @@ export default function Home() {
             <FacilitiesSection />
             <TestSeriesSection />
             <BeyondClassroomSection />
-            <AchieverRewards />
-            <WallOfFame />
             <StudentReel />
             <FAQSection />
             <AppPromo />

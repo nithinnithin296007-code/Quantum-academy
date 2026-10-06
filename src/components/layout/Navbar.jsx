@@ -88,7 +88,7 @@ export default function Navbar() {
 
                     <Link
                         to="/contact"
-                        className="bg-[#25D366] text-white px-5 py-2.5 rounded-lg font-semibold text-sm hover:bg-[#20bd5a] cursor-pointer transition shadow-md shadow-emerald-500/20"
+                        className="bg-[#25D366] text-white px-5 py-2.5 rounded-lg font-semibold text-sm hover:bg-[#20bd5a] cursor-pointer transition-all duration-300 shadow-md shadow-emerald-500/20 hover:scale-105 active:scale-95 hover:shadow-[0_0_20px_rgba(37,211,102,0.4)]"
                     >
                         Enquire Now
                     </Link>

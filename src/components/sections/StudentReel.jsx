@@ -1,11 +1,23 @@
+import CustomVideoPlayer from '../ui/CustomVideoPlayer';
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
+
 export default function StudentReel() {
+    const ref = useRef(null);
+    const isInView = useInView(ref, { once: true, margin: "-100px" });
+
     return (
-        <section id="reviews" className="bg-[#f4f7fc] py-24 px-6 relative overflow-hidden">
-            <div className="max-w-5xl mx-auto relative z-10">
+        <section id="reviews" className="bg-[#f4f7fc] py-24 px-6 relative overflow-hidden" ref={ref}>
+            <div className="max-w-5xl mx-auto relative">
                 <div className="flex flex-col md:flex-row items-center gap-16">
 
                     {/* Text side */}
-                    <div className="flex-grow">
+                    <motion.div 
+                        initial={{ opacity: 0, x: -40 }}
+                        animate={isInView ? { opacity: 1, x: 0 } : {}}
+                        transition={{ duration: 0.6, ease: "easeOut" }}
+                        className="flex-grow"
+                    >
                         <span className="text-amber-500 font-semibold text-xs uppercase tracking-[0.2em]">
                             Hear It From Them
                         </span>
@@ -32,23 +44,19 @@ export default function StudentReel() {
                                 </div>
                             ))}
                         </div>
-                    </div>
+                    </motion.div>
 
                     {/* Video side */}
-                    <div className="flex-shrink-0 w-full md:w-72">
+                    <motion.div 
+                        initial={{ opacity: 0, x: 40 }}
+                        animate={isInView ? { opacity: 1, x: 0 } : {}}
+                        transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+                        className="flex-shrink-0 w-full md:w-72"
+                    >
                         <div className="relative rounded-3xl overflow-hidden shadow-2xl bg-navy-900 aspect-[9/16]">
-                            <video
-                                src="/reel.mp4"
-                                className="w-full h-full object-cover"
-                                controls
-                                controlsList="nodownload nofullscreen"
-                                playsInline
-                                autoPlay
-                                muted
-                                loop
-                            />
+                            <CustomVideoPlayer src="/reel.mp4" />
                         </div>
-                    </div>
+                    </motion.div>
 
                 </div>
             </div>

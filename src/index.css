@@ -39,6 +39,31 @@ h4 {
   font-family: var(--font-display);
 }
 
+/* Custom Selection */
+::selection {
+  background: var(--color-amber-400);
+  color: var(--color-navy-900);
+}
+::-moz-selection {
+  background: var(--color-amber-400);
+  color: var(--color-navy-900);
+}
+
+/* Custom Webkit Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #07091a;
+}
+::-webkit-scrollbar-thumb {
+  background: #1A2B5F;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-amber-400);
+}
+
 /* GPU hardware acceleration helper */
 .gpu-layer {
   transform: translateZ(0);
@@ -107,4 +132,10 @@ input:focus, select:focus, textarea:focus {
 }
 .card-hover:hover {
   transform: translateY(-4px);
+}
+
+/* Lightbox mode UI hiding */
+body.lightbox-active header,
+body.lightbox-active .fixed.bottom-6.right-6 {
+  display: none !important;
 }

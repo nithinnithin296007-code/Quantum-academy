@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
+import CustomVideoPlayer from "../ui/CustomVideoPlayer";
+import { motion, useInView } from "framer-motion";
 
 const REELS = [
     {
@@ -30,14 +32,22 @@ const REELS = [
 export default function BeyondClassroomSection() {
     const [activeReelIndex, setActiveReelIndex] = useState(0);
     const activeReel = REELS[activeReelIndex];
+    
+    const ref = useRef(null);
+    const isInView = useInView(ref, { once: true, margin: "-100px" });
 
     return (
-        <section id="beyond-classroom" className="bg-white py-24 px-6 relative overflow-hidden">
+        <section id="beyond-classroom" className="bg-white py-24 px-6 relative overflow-hidden" ref={ref}>
             <div className="max-w-5xl mx-auto relative z-10">
                 <div className="flex flex-col md:flex-row items-center gap-16">
 
                     {/* Text side */}
-                    <div className="flex-grow">
+                    <motion.div 
+                        initial={{ opacity: 0, x: -40 }}
+                        animate={isInView ? { opacity: 1, x: 0 } : {}}
+                        transition={{ duration: 0.6, ease: "easeOut" }}
+                        className="flex-grow"
+                    >
                         <span className="text-amber-500 font-semibold text-xs uppercase tracking-[0.2em]">
                             Life at Quantum
                         </span>
@@ -92,34 +102,17 @@ export default function BeyondClassroomSection() {
                                 );
                             })}
                         </div>
-                    </div>
+                    </motion.div>
 
                     {/* Video side */}
-                    <div className="flex-shrink-0 w-full md:w-72">
-                        <div className="relative rounded-3xl overflow-hidden shadow-2xl bg-navy-900 aspect-[9/16]">
-                            <video
-                                key={activeReel.src}
-                                src={activeReel.src}
-                                className="w-full h-full object-cover"
-                                controls
-                                controlsList="nodownload nofullscreen"
-                                playsInline
-                                autoPlay
-                                muted
-                                loop
-                            />
-                            {/* Reel indicator overlay */}
-                            <div className="absolute top-4 left-4 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 flex items-center gap-1.5 pointer-events-none">
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-amber-400 animate-pulse">
-                                    <polygon points="23 7 16 12 23 17 23 7"></polygon>
-                                    <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
-                                </svg>
-                                <span className="text-[10px] font-bold text-white uppercase tracking-wider">
-                                    Reel
-                                </span>
-                            </div>
-                        </div>
-                    </div>
+                    <motion.div 
+                        initial={{ opacity: 0, x: 40 }}
+                        animate={isInView ? { opacity: 1, x: 0 } : {}}
+                        transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+                        className="flex-shrink-0 w-full md:w-72 aspect-[9/16]"
+                    >
+                        <CustomVideoPlayer key={activeReel.src} src={activeReel.src} />
+                    </motion.div>
 
                 </div>
             </div>

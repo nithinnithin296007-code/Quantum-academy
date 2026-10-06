@@ -125,8 +125,25 @@ export default function AppPromo() {
                         </div>
                     </motion.div>
 
-                    {/* Phones Stage Wrapper */}
-                    <div className="relative w-full max-w-4xl mx-auto flex justify-center items-center h-[500px] md:h-[580px]">
+                    {/* Phones Stage Wrapper - Swipeable */}
+                    <motion.div 
+                        className="relative w-full max-w-4xl mx-auto flex justify-center items-center h-[500px] md:h-[580px] cursor-grab active:cursor-grabbing"
+                        drag="x"
+                        dragConstraints={{ left: 0, right: 0 }}
+                        dragElastic={0.05}
+                        onDragEnd={(e, { offset, velocity }) => {
+                            const swipe = Math.abs(offset.x) * velocity.x;
+                            if (swipe < -10000 || offset.x < -80) {
+                                // Swipe left (next)
+                                const nextIndex = (activeIndex + 1) % APP_SCREENS.length;
+                                setActiveTab(APP_SCREENS[nextIndex].id);
+                            } else if (swipe > 10000 || offset.x > 80) {
+                                // Swipe right (prev)
+                                const prevIndex = (activeIndex - 1 + APP_SCREENS.length) % APP_SCREENS.length;
+                                setActiveTab(APP_SCREENS[prevIndex].id);
+                            }
+                        }}
+                    >
                         {APP_SCREENS.map((screen, idx) => {
                             const offset = idx - activeIndex;
                             const isActive = idx === activeIndex;
@@ -156,7 +173,11 @@ export default function AppPromo() {
                             return (
                                 <motion.div
                                     key={screen.id}
-                                    onClick={() => setActiveTab(screen.id)}
+                                    onClick={(e) => {
+                                        // Stop propagation so clicking doesn't trigger drag parent behavior unexpectedly
+                                        e.stopPropagation();
+                                        setActiveTab(screen.id);
+                                    }}
                                     animate={{
                                         x: window.innerWidth < 768 ? offset * 70 : xOffset,
                                         scale: window.innerWidth < 768 ? (isActive ? 1 : 0.85) : (isActive ? 1.05 : scale),
@@ -165,25 +186,25 @@ export default function AppPromo() {
                                         rotateY: isActive ? 0 : rotateY,
                                     }}
                                     transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
-                                    className="absolute cursor-pointer group"
+                                    className="absolute group"
                                     style={{ perspective: 1000 }}
                                 >
                                     {/* Clean Device Mockup Frame matching exact image aspect ratio */}
                                     <div
                                         className={`relative ${screen.widthClass} rounded-[2.6rem] bg-navy-950 p-2 md:p-2.5 border-[2px] ${
                                             isActive
-                                                ? "border-amber-400/80 shadow-[0_25px_60px_-10px_rgba(245,158,11,0.35)] ring-4 ring-amber-400/10"
-                                                : "border-white/20 shadow-[0_20px_40px_rgba(0,0,0,0.7)] hover:border-white/40"
+                                                ? "border-amber-400/80 shadow-[0_25px_60px_-10px_rgba(245,158,11,0.35)] ring-4 ring-amber-400/10 pointer-events-auto"
+                                                : "border-white/20 shadow-[0_20px_40px_rgba(0,0,0,0.7)] hover:border-white/40 pointer-events-none"
                                         } transition-all duration-300 overflow-hidden`}
                                     >
                                         {/* Screen Image Container matching exact native aspect ratio */}
                                         <div
-                                            className="rounded-[2rem] overflow-hidden bg-white relative w-full"
+                                            className="rounded-[2rem] overflow-hidden bg-white relative w-full pointer-events-none"
                                             style={{ aspectRatio: screen.aspectRatio }}
                                         >
                                             <img
                                                 src={screen.src}
-                                                alt={screen.alt}
+                                                alt={screen.alt || screen.title}
                                                 className="w-full h-full object-fill block"
                                                 loading="eager"
                                             />
@@ -192,7 +213,7 @@ export default function AppPromo() {
                                 </motion.div>
                             );
                         })}
-                    </div>
+                    </motion.div>
                 </div>
 
                 {/* Bottom Call To Action Bar */}
