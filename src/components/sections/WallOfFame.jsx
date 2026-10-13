@@ -3,6 +3,7 @@ import CircularGallery from "../ui/CircularGallery";
 import useIsMobile from "../../hooks/useIsMobile";
 
 const TOPPER_ITEMS = [
+    { image: "/images/topper-2026-9.jpg", text: "Kunal Singh · 590/720 NEET" },
     { image: "/images/topper-2026-3.jpg", text: "Aditya Gupta · 99.24%ile" },
     { image: "/images/topper-2026-2.jpg", text: "Dhiraj Parmar · 97.63%ile" },
     { image: "/images/topper-2026-6.jpg", text: "Yash Singh · 96.17%ile" },

@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 import { ACADEMY } from "../../constants/academy";
 
@@ -41,6 +41,11 @@ export default function AppPromo() {
     const [activeTab, setActiveTab] = useState("home");
 
     const activeIndex = APP_SCREENS.findIndex((s) => s.id === activeTab);
+
+    // Always reset to the first (home) screen when the section enters view
+    useEffect(() => {
+        if (isInView) setActiveTab("home");
+    }, [isInView]);
 
     return (
         <section id="app-promo" className="relative bg-[#060814] py-24 md:py-32 px-6 overflow-hidden select-none">

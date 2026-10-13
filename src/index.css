@@ -16,8 +16,9 @@
 }
 
 html {
-  scroll-behavior: smooth;
-  text-rendering: optimizeLegibility;
+  /* scroll-behavior: smooth must be OFF — Lenis handles smooth scroll */
+  scroll-behavior: auto;
+  text-rendering: optimizeSpeed;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-tap-highlight-color: transparent;
@@ -30,6 +31,8 @@ body {
   overflow-x: hidden;
   touch-action: manipulation;
   -webkit-overflow-scrolling: touch;
+  /* Contain layout to reduce paint cost on scroll */
+  contain: layout;
 }
 
 h1,
@@ -68,6 +71,19 @@ h4 {
 .gpu-layer {
   transform: translateZ(0);
   will-change: transform;
+}
+
+/* Promote sections to their own GPU composite layer */
+section {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Ambient glow blurs — cap to avoid expensive filter paints */
+.ambient-glow {
+  transform: translateZ(0);
+  will-change: filter;
+  pointer-events: none;
 }
 
 /* Hide scrollbar utility */
@@ -138,4 +154,38 @@ input:focus, select:focus, textarea:focus {
 body.lightbox-active header,
 body.lightbox-active .fixed.bottom-6.right-6 {
   display: none !important;
+}
+
+/* ── Framer Motion performance tweaks ─────────────────────── */
+/* Ensure animated divs are on their own layer */
+[data-framer-motion],
+.framer-motion-element {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Reduce motion for accessibility + perf on low-end devices */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Image rendering optimisation */
+img {
+  will-change: auto;
+  content-visibility: auto;
+}
+
+/* Waveform bars — GPU promote */
+.waveform-bar {
+  will-change: height;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }

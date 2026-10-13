@@ -2,8 +2,9 @@ import { useEffect } from "react";
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
 import FacilitiesSection from "../components/sections/FacilitiesSection";
-import GallerySection from "../components/sections/GallerySection";
+// import GallerySection from "../components/sections/GallerySection"; // temporarily hidden — restore when photos are ready
 import TestSeriesSection from "../components/sections/TestSeriesSection";
+import InteractiveLearning from "../components/sections/InteractiveLearning";
 import SEO from "../components/ui/SEO";
 
 const facilitiesSchema = {
@@ -49,7 +50,7 @@ export default function Facilities() {
             <SEO schema={facilitiesSchema} />
             <Navbar />
             <FacilitiesSection />
-            <GallerySection />
+            <InteractiveLearning />
             <TestSeriesSection />
             <Footer />
         </main>

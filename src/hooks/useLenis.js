@@ -4,13 +4,15 @@ import Lenis from "lenis";
 export default function useLenis() {
     useEffect(() => {
         const lenis = new Lenis({
-            duration: 1.1,
-            easing: (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)),
+            duration: 0.8,
+            // Smooth cubic ease-out — snappy start, gentle stop (no lag)
+            easing: (t) => 1 - Math.pow(1 - t, 3),
             smoothWheel: true,
-            smoothTouch: false, // Native momentum scrolling on touch/mobile for instant responsiveness
-            wheelMultiplier: 1.0,
-            touchMultiplier: 1.5,
+            smoothTouch: false,
+            wheelMultiplier: 0.9,
+            touchMultiplier: 1.2,
             infinite: false,
+            syncTouch: false,
         });
 
         // Register globally for custom components/navbar to trigger scrollTo

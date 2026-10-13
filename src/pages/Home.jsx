@@ -11,6 +11,7 @@ import BeyondClassroomSection from "../components/sections/BeyondClassroomSectio
 import AchieverRewards from "../components/sections/AchieverRewards";
 import WallOfFame from "../components/sections/WallOfFame";
 import StudentReel from "../components/sections/StudentReel";
+import TestimonialsSection from "../components/sections/TestimonialsSection";
 import FAQSection from "../components/sections/FAQSection";
 import AppPromo from "../components/sections/AppPromo";
 import EnquiryForm from "../components/sections/EnquiryForm";
@@ -33,6 +34,7 @@ export default function Home() {
             <TestSeriesSection />
             <BeyondClassroomSection />
             <StudentReel />
+            <TestimonialsSection />
             <FAQSection />
             <AppPromo />
             <EnquiryForm />
