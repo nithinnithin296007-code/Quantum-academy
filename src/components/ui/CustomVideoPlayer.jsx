@@ -139,13 +139,25 @@ export default function CustomVideoPlayer({ src }) {
         }, { once: true });
     };
 
-    /* Touch seek */
+    /* Touch seek — fixed for mobile */
     const handleScrubTouchStart = (e) => {
         e.stopPropagation();
+        // Seek immediately on touch
         seekToRatio(e.touches[0].clientX);
-        const onMove = (ev) => seekToRatio(ev.touches[0].clientX);
-        const onEnd  = ()   => window.removeEventListener('touchmove', onMove);
-        window.addEventListener('touchmove', onMove);
+
+        const onMove = (ev) => {
+            // preventDefault stops the page from scrolling while scrubbing
+            ev.preventDefault();
+            seekToRatio(ev.touches[0].clientX);
+        };
+        const onEnd = () => {
+            // Clean up using the same reference
+            window.removeEventListener('touchmove', onMove);
+            window.removeEventListener('touchend', onEnd);
+        };
+
+        // passive: false is REQUIRED to allow preventDefault inside touchmove
+        window.addEventListener('touchmove', onMove, { passive: false });
         window.addEventListener('touchend', onEnd, { once: true });
     };
 
@@ -177,15 +189,19 @@ export default function CustomVideoPlayer({ src }) {
             {isLightbox && (
                 <button
                     onClick={() => setIsLightbox(false)}
-                    className="absolute top-6 right-6 z-50 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white backdrop-blur-md transition-all"
+                    className="absolute top-4 right-4 z-50 w-10 h-10 bg-white/15 hover:bg-white/25 rounded-full flex items-center justify-center text-white backdrop-blur-md transition-all"
                 >
-                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
             )}
 
-            <div className={`relative bg-black overflow-hidden shadow-2xl group transition-all duration-300 ${isLightbox ? 'h-full aspect-[9/16] rounded-3xl max-w-full' : 'w-full h-full rounded-3xl'}`}>
+            <div className={`relative bg-black overflow-hidden shadow-2xl group transition-all duration-300 ${
+                isLightbox
+                    ? 'rounded-3xl max-h-[88vh] w-auto aspect-[9/16]'
+                    : 'w-full h-full rounded-3xl'
+            }`}>
 
                 {/* Reel badge */}
                 <div className={`absolute top-4 left-4 z-20 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 flex items-center gap-1.5 pointer-events-none transition-opacity duration-300 ${isLightbox ? 'opacity-0' : 'opacity-100'}`}>
@@ -235,30 +251,38 @@ export default function CustomVideoPlayer({ src }) {
                                 {fmt(currentTime)}
                             </span>
 
-                            {/* Scrub track */}
+                            {/* Scrub track — visual bar */}
                             <div
                                 ref={scrubRef}
                                 onMouseDown={handleScrubMouseDown}
                                 onTouchStart={handleScrubTouchStart}
-                                className="relative flex-1 h-1 sm:h-[5px] rounded-full bg-white/15 cursor-pointer group/scrub"
+                                className="relative flex-1 cursor-pointer group/scrub"
+                                style={{ touchAction: 'none' }}
                             >
-                                {/* Filled portion */}
-                                <div
-                                    className="absolute inset-y-0 left-0 rounded-full bg-amber-400 transition-none"
-                                    style={{ width: `${progress}%` }}
-                                />
-                                {/* Buffered ghost (visual only) */}
-                                <div
-                                    className="absolute inset-y-0 left-0 rounded-full bg-white/20 -z-10"
-                                    style={{ width: `${Math.min(progress + 12, 100)}%` }}
-                                />
-                                {/* Thumb dot */}
-                                <div
-                                    className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2
-                                               w-3 h-3 rounded-full bg-amber-400 shadow-md
-                                               opacity-0 group-hover/scrub:opacity-100 transition-opacity duration-150"
-                                    style={{ left: `${progress}%` }}
-                                />
+                                {/* Invisible tall touch target for easy mobile tapping */}
+                                <div className="absolute inset-x-0 -top-4 -bottom-4" />
+
+                                {/* Visual track */}
+                                <div className="relative h-[5px] rounded-full bg-white/15 overflow-visible">
+                                    {/* Filled portion */}
+                                    <div
+                                        className="absolute inset-y-0 left-0 rounded-full bg-amber-400"
+                                        style={{ width: `${progress}%` }}
+                                    />
+                                    {/* Buffered ghost */}
+                                    <div
+                                        className="absolute inset-y-0 left-0 rounded-full bg-white/20 -z-10"
+                                        style={{ width: `${Math.min(progress + 12, 100)}%` }}
+                                    />
+                                    {/* Thumb dot — always visible on mobile, hover-visible on desktop */}
+                                    <div
+                                        className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2
+                                                   w-3.5 h-3.5 rounded-full bg-amber-400 shadow-md
+                                                   sm:opacity-0 sm:group-hover/scrub:opacity-100
+                                                   transition-opacity duration-150"
+                                        style={{ left: `${progress}%` }}
+                                    />
+                                </div>
                             </div>
 
                             {/* Duration */}
