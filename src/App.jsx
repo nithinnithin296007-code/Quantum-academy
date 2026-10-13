@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { Toaster } from "react-hot-toast";
@@ -23,14 +23,29 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 function AppContent() {
   useLenis();
   const location = useLocation();
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Show loader for at least 2.2s so all animations play,
+  // but also wait for the first lazy chunk to be ready.
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 2200);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <>
+      {/* Loading screen — AnimatePresence drives the exit fade */}
+      <AnimatePresence mode="wait">
+        {isLoading && <LoadingSpinner key="loader" />}
+      </AnimatePresence>
+
       <NetworkStatus />
       <CookieBanner />
       <BackToTop />
       <WhatsAppButton />
       <AnimatePresence mode="wait" initial={false}>
-        <Suspense fallback={<LoadingSpinner />}>
+        {/* Suspense fallback is null — loader above handles it */}
+        <Suspense fallback={null}>
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={<Home />} />
             <Route path="/thank-you" element={<ThankYou />} />

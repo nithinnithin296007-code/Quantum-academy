@@ -29,10 +29,12 @@ function Grid() {
 
 export default function LoadingSpinner() {
     return (
-        <motion.div
+    <motion.div
             className="fixed inset-0 z-[9999] bg-[#07091a] flex flex-col items-center justify-center overflow-hidden"
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0, transition: { duration: 0.5, ease: "easeInOut" } }}
+            transition={{ duration: 0.3 }}
         >
             {/* Top progress bar */}
             <ProgressBar />
