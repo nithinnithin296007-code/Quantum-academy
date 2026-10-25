@@ -20,7 +20,7 @@ export const copyToClipboard = async (text, successMessage = "Copied to clipboar
     try {
         await navigator.clipboard.writeText(text);
         toast.success(successMessage);
-    } catch (err) {
+    } catch {
         toast.error("Failed to copy. Please copy manually.");
     }
 };

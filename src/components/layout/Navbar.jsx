@@ -9,27 +9,65 @@ export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
 
     useEffect(() => {
-        const handleScroll = () => {
-            if (window.scrollY > 10) {
-                setScrolled(true);
-            } else {
-                setScrolled(false);
-            }
+        const checkScroll = (data) => {
+            const y = (data && typeof data.scroll === "number")
+                ? data.scroll
+                : (window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0);
+            setScrolled(y > 10);
         };
-        window.addEventListener("scroll", handleScroll, { passive: true });
-        
+
+        checkScroll();
+        window.addEventListener("scroll", checkScroll, { passive: true });
+        window.addEventListener("touchmove", checkScroll, { passive: true });
+        window.addEventListener("wheel", checkScroll, { passive: true });
+
+        let interval = null;
+        if (window.lenis) {
+            window.lenis.on("scroll", checkScroll);
+        } else {
+            interval = setInterval(() => {
+                if (window.lenis) {
+                    window.lenis.on("scroll", checkScroll);
+                    clearInterval(interval);
+                    interval = null;
+                }
+            }, 100);
+            setTimeout(() => {
+                if (interval) clearInterval(interval);
+            }, 3000);
+        }
+
         // Ensure light class is removed from document root
         if (typeof window !== "undefined") {
             document.documentElement.classList.remove("light");
             localStorage.removeItem("theme");
+            // Also ensure any stuck lightbox-active class is cleared
+            document.body.classList.remove("lightbox-active");
+            document.documentElement.classList.remove("lightbox-active");
         }
 
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
+        return () => {
+            window.removeEventListener("scroll", checkScroll);
+            window.removeEventListener("touchmove", checkScroll);
+            window.removeEventListener("wheel", checkScroll);
+            if (window.lenis) {
+                window.lenis.off("scroll", checkScroll);
+            }
+            if (interval) clearInterval(interval);
+        };
+    }, [location.pathname]);
+
+    // Close mobile menu on navigation
+    useEffect(() => {
+        setMenuOpen(false);
+    }, [location.pathname]);
+
+    // On pages other than home (or when scrolled), always show dark frosted glass background
+    const showSolidNav = location.pathname !== "/" || scrolled;
 
     return (
-        <header className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled
-            ? "bg-[#07091a]/90 backdrop-blur-md border-b border-white/5 py-3"
+        <header className={`fixed top-0 w-full z-50 transition-all duration-300 ${showSolidNav
+            ? "bg-[#07091a]/95 backdrop-blur-md border-b border-white/10 shadow-lg py-3"
             : "bg-transparent py-5"
             }`}>
             <nav className="max-w-6xl mx-auto flex items-center justify-between px-4">

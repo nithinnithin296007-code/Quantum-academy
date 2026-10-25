@@ -27,3 +27,6 @@ dist-ssr
 .env
 .env.local
 .env.*.local
+
+# Brag video intermediate work and frames
+brag-output/work/

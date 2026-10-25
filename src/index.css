@@ -4,15 +4,24 @@
 @theme {
   --color-navy-50: #eef1f8;
   --color-navy-100: #d5ddf0;
+  --color-navy-200: #b0c0e5;
+  --color-navy-300: #8aa3da;
+  --color-navy-400: #5c7fcb;
   --color-navy-500: #3a5bbf;
+  --color-navy-600: #2a4396;
   --color-navy-700: #1A2B5F;
+  --color-navy-800: #132048;
   --color-navy-900: #0d1730;
+  --color-navy-950: #070c1a;
 
   --color-amber-400: #F5A623;
   --color-amber-500: #e09610;
 
   --font-display: "Poppins", sans-serif;
   --font-body: "Inter", sans-serif;
+
+  /* Extra-small breakpoint for volume slider */
+  --breakpoint-xs: 380px;
 }
 
 html {
@@ -150,10 +159,61 @@ input:focus, select:focus, textarea:focus {
   transform: translateY(-4px);
 }
 
-/* Lightbox mode UI hiding */
-body.lightbox-active header,
-body.lightbox-active .fixed.bottom-6.right-6 {
+/* Prevent background and viewport scrolling in lightbox */
+html.lightbox-active,
+body.lightbox-active {
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+  touch-action: none !important;
+  height: 100% !important;
+  position: relative !important;
+}
+
+html.lightbox-active::-webkit-scrollbar,
+body.lightbox-active::-webkit-scrollbar {
   display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* ── Modal Animations ───────────────────────────────────────── */
+@keyframes modalBackdropFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalContentPopIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes waveformBounce {
+  0% {
+    transform: scaleY(0.2);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+.modal-backdrop-animate {
+  animation: modalBackdropFadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.modal-content-animate {
+  animation: modalContentPopIn 0.28s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 /* ── Framer Motion performance tweaks ─────────────────────── */

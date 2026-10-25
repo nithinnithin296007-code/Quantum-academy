@@ -193,19 +193,15 @@ export default function InteractiveLearning() {
                                 className="w-full max-w-[300px] flex flex-col gap-2"
                                 style={{ rotate: "-1.5deg" }}
                             >
-                                <div className="relative rounded-[2rem] overflow-hidden
-                                                ring-1 ring-white/10
-                                                shadow-[0_20px_60px_rgba(0,0,0,0.7)]"
-                                    style={{ aspectRatio: "9/16" }}>
-                                    <div className="absolute top-4 left-4 z-30 flex items-center gap-1.5
-                                                    bg-black/60 backdrop-blur-md px-3 py-1 rounded-full
-                                                    border border-white/10 pointer-events-none">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-                                        <span className="text-[9px] font-bold text-white uppercase tracking-wider">
-                                            Live Session
-                                        </span>
-                                    </div>
-                                    <CustomVideoPlayer src="/videos/reel-interactive-1.mp4" />
+                                <div
+                                    className="relative rounded-3xl overflow-hidden ring-1 ring-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.7)] aspect-[9/16]"
+                                    style={{
+                                        borderRadius: '1.5rem',
+                                        WebkitMaskImage: '-webkit-radial-gradient(white, black)',
+                                        transform: 'translateZ(0)',
+                                    }}
+                                >
+                                    <CustomVideoPlayer src="/videos/reel-interactive-1.mp4" badgeText="Live Session" />
                                 </div>
                                 <p className="text-gray-400 text-xs font-medium tracking-wide text-center">
                                     Inside the Classroom
@@ -230,19 +226,15 @@ export default function InteractiveLearning() {
                                 className="w-full max-w-[300px] flex flex-col gap-2"
                                 style={{ rotate: "1.5deg" }}
                             >
-                                <div className="relative rounded-[2rem] overflow-hidden
-                                                ring-1 ring-amber-400/20
-                                                shadow-[0_20px_60px_rgba(245,166,35,0.15)]"
-                                    style={{ aspectRatio: "9/16" }}>
-                                    <div className="absolute top-4 left-4 z-30 flex items-center gap-1.5
-                                                    bg-black/60 backdrop-blur-md px-3 py-1 rounded-full
-                                                    border border-white/10 pointer-events-none">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-                                        <span className="text-[9px] font-bold text-white uppercase tracking-wider">
-                                            Campus Life
-                                        </span>
-                                    </div>
-                                    <CustomVideoPlayer src="/videos/reel-interactive-2.mp4" />
+                                <div
+                                    className="relative rounded-3xl overflow-hidden ring-1 ring-amber-400/20 shadow-[0_20px_60px_rgba(245,166,35,0.15)] aspect-[9/16]"
+                                    style={{
+                                        borderRadius: '1.5rem',
+                                        WebkitMaskImage: '-webkit-radial-gradient(white, black)',
+                                        transform: 'translateZ(0)',
+                                    }}
+                                >
+                                    <CustomVideoPlayer src="/videos/reel-interactive-2.mp4" badgeText="Campus Life" />
                                 </div>
                                 <p className="text-gray-400 text-xs font-medium tracking-wide text-center">
                                     Student Experience
@@ -261,19 +253,15 @@ export default function InteractiveLearning() {
                                 transition={{ duration: 0.75, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
                                 className="flex-1 flex flex-col gap-3 h-full"
                             >
-                                <div className="relative flex-1 rounded-[2rem] overflow-hidden
-                                                ring-1 ring-white/8
-                                                shadow-[0_20px_80px_rgba(0,0,0,0.6)]
-                                                min-h-[340px]">
-                                    <div className="absolute top-4 left-4 z-30 flex items-center gap-1.5
-                                                    bg-black/60 backdrop-blur-md px-3 py-1 rounded-full
-                                                    border border-white/10 pointer-events-none">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-                                        <span className="text-[9px] font-bold text-white uppercase tracking-wider">
-                                            Live Session
-                                        </span>
-                                    </div>
-                                    <CustomVideoPlayer src="/videos/reel-interactive-1.mp4" />
+                                <div
+                                    className="relative flex-1 rounded-3xl overflow-hidden ring-1 ring-white/10 shadow-[0_20px_80px_rgba(0,0,0,0.6)] min-h-[340px]"
+                                    style={{
+                                        borderRadius: '1.5rem',
+                                        WebkitMaskImage: '-webkit-radial-gradient(white, black)',
+                                        transform: 'translateZ(0)',
+                                    }}
+                                >
+                                    <CustomVideoPlayer src="/videos/reel-interactive-1.mp4" badgeText="Live Session" />
                                 </div>
                                 <p className="text-gray-400 text-xs font-medium tracking-wide text-center flex-shrink-0">
                                     Inside the Classroom
@@ -288,19 +276,15 @@ export default function InteractiveLearning() {
                                 transition={{ duration: 0.75, delay: 0.22, ease: [0.22, 1, 0.36, 1] }}
                                 className="flex-1 flex flex-col gap-3 h-full pt-16"
                             >
-                                <div className="relative flex-1 rounded-[2rem] overflow-hidden
-                                                ring-1 ring-white/8
-                                                shadow-[0_20px_80px_rgba(0,0,0,0.6)]
-                                                min-h-[340px]">
-                                    <div className="absolute top-4 left-4 z-30 flex items-center gap-1.5
-                                                    bg-black/60 backdrop-blur-md px-3 py-1 rounded-full
-                                                    border border-white/10 pointer-events-none">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-                                        <span className="text-[9px] font-bold text-white uppercase tracking-wider">
-                                            Campus Life
-                                        </span>
-                                    </div>
-                                    <CustomVideoPlayer src="/videos/reel-interactive-2.mp4" />
+                                <div
+                                    className="relative flex-1 rounded-3xl overflow-hidden ring-1 ring-white/10 shadow-[0_20px_80px_rgba(0,0,0,0.6)] min-h-[340px]"
+                                    style={{
+                                        borderRadius: '1.5rem',
+                                        WebkitMaskImage: '-webkit-radial-gradient(white, black)',
+                                        transform: 'translateZ(0)',
+                                    }}
+                                >
+                                    <CustomVideoPlayer src="/videos/reel-interactive-2.mp4" badgeText="Campus Life" />
                                 </div>
                                 <p className="text-gray-400 text-xs font-medium tracking-wide text-center flex-shrink-0">
                                     Student Experience

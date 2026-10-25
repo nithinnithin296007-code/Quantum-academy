@@ -104,14 +104,23 @@ export default function BeyondClassroomSection() {
                         </div>
                     </motion.div>
 
-                    {/* Video side */}
+                    {/* Video side: Clean rounded-corner reel */}
                     <motion.div 
-                        initial={{ opacity: 0, x: 40 }}
+                        initial={{ opacity: 0, x: 30 }}
                         animate={isInView ? { opacity: 1, x: 0 } : {}}
                         transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
-                        className="flex-shrink-0 w-full md:w-72 aspect-[9/16]"
+                        className="flex-shrink-0 w-full max-w-[290px] sm:max-w-[320px] mx-auto"
                     >
-                        <CustomVideoPlayer key={activeReel.src} src={activeReel.src} />
+                        <div
+                            className="relative rounded-3xl overflow-hidden shadow-2xl bg-navy-900 aspect-[9/16] ring-1 ring-black/10"
+                            style={{
+                                borderRadius: '1.5rem',
+                                WebkitMaskImage: '-webkit-radial-gradient(white, black)',
+                                transform: 'translateZ(0)',
+                            }}
+                        >
+                            <CustomVideoPlayer key={activeReel.src} src={activeReel.src} badgeText="Life @ Quantum" />
+                        </div>
                     </motion.div>
 
                 </div>
